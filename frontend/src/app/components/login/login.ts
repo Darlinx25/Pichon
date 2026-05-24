@@ -1,9 +1,31 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
-  imports: [],
+  imports: [ReactiveFormsModule],
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })
-export class Login {}
+export class Login {
+  formBuilder = inject(FormBuilder);
+
+  loginForm = this.formBuilder.group({
+    username: ['', Validators.required],
+    password: ['', Validators.required]
+  });
+
+  get username() {
+    return this.loginForm.get('username');
+  }
+
+  get password() {
+    return this.loginForm.get('password');
+  }
+
+  onSubmit() {
+    if (this.loginForm.valid) {
+      /*TO DO*/
+    }
+  }
+}
