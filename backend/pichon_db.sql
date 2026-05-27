@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql:3306
--- Generation Time: May 27, 2026 at 05:33 PM
+-- Generation Time: May 27, 2026 at 09:31 PM
 -- Server version: 8.0.46
 -- PHP Version: 8.3.31
 
@@ -67,7 +67,7 @@ CREATE TABLE `mensaje` (
 CREATE TABLE `usuario` (
   `id` int NOT NULL,
   `username` varchar(30) NOT NULL,
-  `password` varchar(30) NOT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `mail` varchar(255) NOT NULL,
   `alias` varchar(30) NOT NULL,
   `img` varchar(255) DEFAULT NULL
