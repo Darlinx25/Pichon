@@ -1,5 +1,7 @@
 <div id="formulario" class="p-3 d-flex flex-column justify-content-center align-items-center">
     <h1 class="p-3">REGISTER</h1>
+    <p style="color: green;" *ngIf="successMessage">{{ successMessage }}</p>
+    <p style="color: red;" *ngIf="errorMessage">{{ errorMessage }}</p>
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
         <div class="d-flex gap-3 mb-3">
             <label class="form-label w-25" for="title">username</label>
