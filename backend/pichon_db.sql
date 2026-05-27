@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql:3306
--- Generation Time: May 27, 2026 at 05:15 PM
+-- Generation Time: May 27, 2026 at 05:33 PM
 -- Server version: 8.0.46
 -- PHP Version: 8.3.31
 
@@ -68,6 +68,7 @@ CREATE TABLE `usuario` (
   `id` int NOT NULL,
   `username` varchar(30) NOT NULL,
   `password` varchar(30) NOT NULL,
+  `mail` varchar(255) NOT NULL,
   `alias` varchar(30) NOT NULL,
   `img` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -76,8 +77,8 @@ CREATE TABLE `usuario` (
 -- Dumping data for table `usuario`
 --
 
-INSERT INTO `usuario` (`id`, `username`, `password`, `alias`, `img`) VALUES
-(1, 'Luis', '1234', 'Lugi', NULL);
+INSERT INTO `usuario` (`id`, `username`, `password`, `mail`, `alias`, `img`) VALUES
+(1, 'Luis', '1234', '', 'Lugi', NULL);
 
 --
 -- Indexes for dumped tables
