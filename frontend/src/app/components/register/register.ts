@@ -13,6 +13,7 @@ export class Register {
   registerForm = this.formBuilder.group({
     username: ['', [Validators.required, Validators.minLength(3)]],
     email: ['', [Validators.required, Validators.email]],
+    alias: ['', [Validators.required]],
     password: ['', [Validators.required, Validators.minLength(12)]],
     confirmPassword: ['', [Validators.required, Validators.minLength(12)]]
   });
@@ -23,6 +24,10 @@ export class Register {
 
   get email() {
     return this.registerForm.get('email');
+  }
+
+  get alias() {
+    return this.registerForm.get('alias');
   }
 
   get password() {
