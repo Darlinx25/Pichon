@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql:3306
--- Generation Time: May 27, 2026 at 09:31 PM
+-- Generation Time: May 27, 2026 at 10:57 PM
 -- Server version: 8.0.46
 -- PHP Version: 8.3.31
 
@@ -68,7 +68,6 @@ CREATE TABLE `usuario` (
   `id` int NOT NULL,
   `username` varchar(30) NOT NULL,
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `mail` varchar(255) NOT NULL,
   `alias` varchar(30) NOT NULL,
   `img` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -77,35 +76,14 @@ CREATE TABLE `usuario` (
 -- Dumping data for table `usuario`
 --
 
-INSERT INTO `usuario` (`id`, `username`, `password`, `mail`, `alias`, `img`) VALUES
-(1, 'Luis', '1234', '', 'Lugi', NULL);
+INSERT INTO `usuario` (`id`, `username`, `password`, `alias`, `img`) VALUES
+(1, 'Luis', '1234', 'Lugi', NULL),
+(2, 'facu', '$2y$10$I3SmzRzuWVUF1IkXxvgVI.xq.q1tUkX2wfAH6fx2isA2LKO5d0cUK', 'Pichon', NULL),
+(3, 'Kevin', '$2y$10$fyA2JhG.8A.SYp16Lm14OukC6zEpmoJfDIMZnTYqRHDzdotkxjJvi', 'kevin2', NULL);
 
 --
 -- Indexes for dumped tables
 --
-
---
--- Indexes for table `chat`
---
-ALTER TABLE `chat`
-  ADD PRIMARY KEY (`id_chat`),
-  ADD KEY `fk_usuario1` (`id_usuario1`),
-  ADD KEY `fk_usuario2` (`id_usuario2`);
-
---
--- Indexes for table `contactos`
---
-ALTER TABLE `contactos`
-  ADD PRIMARY KEY (`id_usuario`,`id_contacto`),
-  ADD KEY `fk_contacto` (`id_contacto`);
-
---
--- Indexes for table `mensaje`
---
-ALTER TABLE `mensaje`
-  ADD PRIMARY KEY (`id_mensaje`),
-  ADD KEY `fk_chat` (`id_chat`),
-  ADD KEY `fk_usuario_mensaje` (`id_usuario`);
 
 --
 -- Indexes for table `usuario`
@@ -118,47 +96,10 @@ ALTER TABLE `usuario`
 --
 
 --
--- AUTO_INCREMENT for table `chat`
---
-ALTER TABLE `chat`
-  MODIFY `id_chat` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `mensaje`
---
-ALTER TABLE `mensaje`
-  MODIFY `id_mensaje` int NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `chat`
---
-ALTER TABLE `chat`
-  ADD CONSTRAINT `fk_usuario1` FOREIGN KEY (`id_usuario1`) REFERENCES `usuario` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_usuario2` FOREIGN KEY (`id_usuario2`) REFERENCES `usuario` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `contactos`
---
-ALTER TABLE `contactos`
-  ADD CONSTRAINT `fk_contacto` FOREIGN KEY (`id_contacto`) REFERENCES `usuario` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `mensaje`
---
-ALTER TABLE `mensaje`
-  ADD CONSTRAINT `fk_chat` FOREIGN KEY (`id_chat`) REFERENCES `chat` (`id_chat`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_usuario_mensaje` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
