@@ -1,4 +1,9 @@
 <?php
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+
 header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST");
@@ -12,7 +17,6 @@ $data = json_decode(file_get_contents("php://input"), true);
 $username = $data["username"];
 $password = $data["password"];
 $confirm  = $data["confirmPassword"];
-$email    = $data["email"];
 $alias    = $data["alias"];
 
 if ($password != $confirm) {
@@ -32,11 +36,13 @@ mysqli_stmt_close($stmt);
 
 $hash = password_hash($password, PASSWORD_BCRYPT);
 
-$stmt = mysqli_prepare($conexion, "INSERT INTO usuario (username, password, mail, alias) VALUES (?, ?, ?, ?)");
-mysqli_stmt_bind_param($stmt, "ssss", $username, $hash, $email, $alias);
+$stmt = mysqli_prepare($conexion, "INSERT INTO usuario (username, password, alias) VALUES (?, ?, ?)");
+mysqli_stmt_bind_param($stmt, "sss", $username, $hash, $alias);
 if (mysqli_stmt_execute($stmt)) {
     echo json_encode(["success" => true, "message" => "Usuario creado correctamente"]);
 } else {
     echo json_encode(["error" => "Error al crear usuario"]);
 }
 mysqli_stmt_close($stmt);
+
+?>

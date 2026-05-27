@@ -11,7 +11,7 @@ export class AuthService {
     confirmPassword: string;
   }) {
     return this.http.post<{ success?: boolean; message?: string; error?: string }>(
-      'http://localhost:8000/register.php',
+      'http://127.1.0.0/Pichon/backend/register.php',
       data
     );
   }
