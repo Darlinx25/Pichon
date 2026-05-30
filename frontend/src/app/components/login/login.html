@@ -1,5 +1,6 @@
 <div id="formulario" class="p-3 d-flex flex-column justify-content-center align-items-center">
     <h1 class="p-3">LOGIN</h1>
+    <p style="color: red;" *ngIf="errorMessage">{{ errorMessage }}</p>
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <div class="d-flex gap-3 mb-3">
             <label class="form-label w-25" for="title">username</label>

@@ -1,10 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-
+import { Sidebar } from '../sidebar/sidebar'
+ 
 @Component({
   selector: 'app-message-window',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, Sidebar],
   templateUrl: './message-window.html',
   styleUrl: './message-window.scss',
 })

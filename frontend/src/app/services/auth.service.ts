@@ -15,4 +15,10 @@ export class AuthService {
       data
     );
   }
+  login(data: { username: string; password: string }) {
+    return this.http.post<{ success?: boolean; user?: any; error?: string }>(
+      'http://127.0.0.1/Pichon/backend/login.php',
+      data
+    );
+  }
 }
