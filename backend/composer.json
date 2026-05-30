@@ -1,0 +1,11 @@
+{
+  "name": "pichon/websocket-server",
+  "require": {
+    "cboden/ratchet": "^0.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "Pichon\\": "src/"
+    }
+  }
+}
