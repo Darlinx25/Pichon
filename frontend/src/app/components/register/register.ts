@@ -1,8 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit  } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { NgIf } from '@angular/common';
-import { RouterLink} from '@angular/router';
+import { RouterLink, Router} from '@angular/router';
 
 
 @Component({
@@ -11,9 +11,10 @@ import { RouterLink} from '@angular/router';
   templateUrl: './register.html',
   styleUrl: './register.scss',
 })
-export class Register {
+export class Register implements OnInit {
   formBuilder = inject(FormBuilder);
   authService = inject(AuthService);
+  router = inject(Router);
 
   errorMessage = '';
   successMessage = '';
@@ -44,6 +45,12 @@ export class Register {
 
   get confirmPassword() {
     return this.registerForm.get('confirmPassword');
+  }
+
+    ngOnInit() {
+    if(localStorage.getItem('user')){
+      this.router.navigate(['/chat']);
+    }
   }
 
   onSubmit() {

@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sidebar',
@@ -6,4 +7,12 @@ import { Component } from '@angular/core';
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.scss',
 })
-export class Sidebar {}
+export class Sidebar {
+  router = inject(Router);  
+  user = JSON.parse(localStorage.getItem('user') || '{}'); 
+
+  cerrarSesion(){
+    localStorage.removeItem('user');
+    this.router.navigate(['/']);
+  }
+}

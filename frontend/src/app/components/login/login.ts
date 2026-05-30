@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit  } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
@@ -10,7 +10,7 @@ import { NgIf } from '@angular/common';
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })
-export class Login {
+export class Login implements OnInit{
   formBuilder = inject(FormBuilder);
   authService = inject(AuthService);
   router = inject(Router);
@@ -30,6 +30,12 @@ export class Login {
     return this.loginForm.get('password');
   }
 
+   ngOnInit() {
+    if(localStorage.getItem('user')){
+      this.router.navigate(['/chat']);
+    }
+  }
+
   onSubmit() {
      if (this.loginForm.invalid) return;
     this.authService.login(this.loginForm.value as any).subscribe({
@@ -46,4 +52,5 @@ export class Login {
       },
     });
   }
+
 }
