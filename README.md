@@ -15,11 +15,14 @@ ng serve --host 0.0.0.0
 ```
 ng serve --configuration production --host 0.0.0.0
 ```
-
+### Permisos necesarios
+```
+sudo chmod -R 777 /var/www/html/Pichon
+sudo chown -R $USER:$USER /var/www/html
+```
 ### Acceso a Phpmyadmin
 
 - http://127.0.0.1:8080/
-
 
 ### Librerias utilizadas
 
