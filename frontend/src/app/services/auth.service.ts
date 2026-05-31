@@ -5,13 +5,7 @@ import { environment } from '../../environments/environment';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private http = inject(HttpClient);
-  register(data: {
-    username: string;
-    email: string;
-    alias: string;
-    password: string;
-    confirmPassword: string;
-  }) {
+  register(data: FormData) {
     return this.http.post<{ success?: boolean; message?: string; error?: string }>(
       `${environment.apiBaseUrl}/register.php`,
       data

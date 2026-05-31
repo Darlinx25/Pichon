@@ -1,8 +1,8 @@
-import { Component, inject, OnInit  } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { NgIf } from '@angular/common';
-import { RouterLink, Router} from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 
 
 @Component({
@@ -18,21 +18,17 @@ export class Register implements OnInit {
 
   errorMessage = '';
   successMessage = '';
+  selectedFile: File | null = null;
 
   registerForm = this.formBuilder.group({
     username: ['', [Validators.required, Validators.minLength(3)]],
-    email: ['', [Validators.required, Validators.email]],
     alias: ['', [Validators.required]],
     password: ['', [Validators.required, Validators.minLength(12)]],
-    confirmPassword: ['', [Validators.required, Validators.minLength(12)]]
+    confirmPassword: ['', [Validators.required, Validators.minLength(12)]],
   });
 
   get username() {
     return this.registerForm.get('username');
-  }
-
-  get email() {
-    return this.registerForm.get('email');
   }
 
   get alias() {
@@ -47,20 +43,29 @@ export class Register implements OnInit {
     return this.registerForm.get('confirmPassword');
   }
 
-    ngOnInit() {
-    if(localStorage.getItem('user')){
+  ngOnInit() {
+    if (localStorage.getItem('user')) {
       this.router.navigate(['/chat']);
     }
   }
 
   onSubmit() {
     if (this.registerForm.invalid) return;
-    this.authService.register(this.registerForm.value as any).subscribe({
+    const formData = new FormData();
+    formData.append('username', this.registerForm.get('username')?.value ?? '');
+    formData.append('alias', this.registerForm.get('alias')?.value ?? '');
+    formData.append('password', this.registerForm.get('password')?.value ?? '');
+    formData.append('confirmPassword', this.registerForm.get('confirmPassword')?.value ?? '');
+    if (this.selectedFile) {
+      formData.append('imagen', this.selectedFile, this.selectedFile.name);
+    }
+    this.authService.register(formData).subscribe({
       next: (res: any) => {
         if (res.success) {
           this.successMessage = res.message;
           this.errorMessage = '';
           this.registerForm.reset();
+          this.selectedFile = null;
         } else {
           this.errorMessage = res.error;
           this.successMessage = '';
@@ -71,5 +76,12 @@ export class Register implements OnInit {
         this.successMessage = '';
       },
     });
+  }
+
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedFile = input.files[0];
+    }
   }
 }
