@@ -1,5 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
+
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private http = inject(HttpClient);
@@ -11,13 +13,13 @@ export class AuthService {
     confirmPassword: string;
   }) {
     return this.http.post<{ success?: boolean; message?: string; error?: string }>(
-      'http://127.0.0.1/Pichon/backend/register.php',
+      `http://${environment.apiBaseUrl}/register.php`,
       data
     );
   }
   login(data: { username: string; password: string }) {
     return this.http.post<{ success?: boolean; user?: any; error?: string }>(
-      'http://127.0.0.1/Pichon/backend/login.php',
+      `http://${environment.apiBaseUrl}/register.php`,
       data
     );
   }

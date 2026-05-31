@@ -5,13 +5,14 @@ import { Sidebar } from '../sidebar/sidebar'
 import { Subscription } from 'rxjs';
 import { Websocket } from '../../services/websocketService';
 
- 
 @Component({
   selector: 'app-message-window',
   imports: [ReactiveFormsModule, RouterLink, Sidebar],
   templateUrl: './message-window.html',
   styleUrl: './message-window.scss',
 })
+
+
 export class MessageWindow implements OnInit, OnDestroy {
   messages: any[] = [];
   private messageSubscription!: Subscription;
@@ -53,7 +54,7 @@ export class MessageWindow implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.messageSubscription.unsubscribe();
-    this.webSocketService.closeConnection();
+    //this.messageSubscription.unsubscribe();
+    //this.webSocketService.closeConnection();
   }
 }
