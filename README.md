@@ -5,9 +5,15 @@ Desde la raiz del proyecto para levantar, mySQL, phpMyAdmin y el servidor WebSoc
 docker compose up --build
 ```
 
-### Para levantar angular desde Pichon/frontend
+## Para levantar angular desde Pichon/frontend
+
+#### Para desarrollo
 ```
-ng serve -0
+ng serve --host 0.0.0.0                                               
+```
+#### Para produccion
+```
+ng serve --configuration production --host 0.0.0.0
 ```
 
 ### Acceso a Phpmyadmin
