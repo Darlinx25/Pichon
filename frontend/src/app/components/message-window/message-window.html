@@ -1,21 +1,27 @@
 <div class="d-flex vh-100">
     <app-sidebar class="w-25" />
     <div class="d-flex flex-column flex-grow-1">
-    <div style="border: 1px solid #000000; background-color: rgb(236, 236, 236); height: 90%;"
-        class="d-flex justify-content-center align-items-center">[messages]</div>
-
-    <div style="border: 1px solid #000000; background-color: rgb(236, 236, 236); height: 10%;"
-        class="d-flex justify-content-center align-items-center">
-        <form id="chat-form" [formGroup]="chatForm" (ngSubmit)="enviarMensaje()">
-            <div class="input-group h-100">
-                <textarea formControlName="mensaje" class="form-control" placeholder="Escribe algo..." rows="1"
-                    style="resize: none;">
-                </textarea>
-                <button class="btn btn-primary" type="submit" [disabled]="chatForm.invalid">
-                    Enviar
-                </button>
+        <div style="border: 1px solid #000000; background-color: rgb(236, 236, 236); height: 90%; overflow-y: auto;"
+            class="d-flex flex-column p-2">
+            @for (msg of messages; track $index) {
+            <div class="mb-1 p-2 rounded shadow-sm" [class.ms-auto]="msg.side === 'outgoing'"
+                [class.bg-primary]="msg.side === 'outgoing'" [class.text-white]="msg.side === 'outgoing'"
+                [class.bg-white]="msg.side !== 'outgoing'" style="max-width: 75%;">
+                {{ msg.data || msg }}
             </div>
-        </form>
+            }
+        </div>
+        <div style="border: 1px solid #000000; background-color: rgb(236, 236, 236); height: 10%;"
+            class="d-flex justify-content-center align-items-center">
+            <form id="chat-form" [formGroup]="chatForm" (ngSubmit)="enviarMensaje()">
+                <div class="input-group h-100">
+                    <textarea formControlName="mensaje" class="form-control" placeholder="Escribe algo..." rows="1"
+                        style="resize: none;"></textarea>
+                    <button class="btn btn-primary" type="submit" [disabled]="chatForm.invalid">
+                        Enviar
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 </div>

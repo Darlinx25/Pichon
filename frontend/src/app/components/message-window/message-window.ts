@@ -1,7 +1,10 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink, Router } from '@angular/router';
 import { Sidebar } from '../sidebar/sidebar'
+import { Subscription } from 'rxjs';
+import { Websocket } from '../../services/websocketService';
+
  
 @Component({
   selector: 'app-message-window',
@@ -9,7 +12,12 @@ import { Sidebar } from '../sidebar/sidebar'
   templateUrl: './message-window.html',
   styleUrl: './message-window.scss',
 })
-export class MessageWindow implements OnInit {
+export class MessageWindow implements OnInit, OnDestroy {
+  messages: any[] = [];
+  private messageSubscription!: Subscription;
+
+  constructor(private webSocketService: Websocket) {}
+
   formBuilder = inject(FormBuilder);
   router = inject(Router); 
 
@@ -21,9 +29,31 @@ export class MessageWindow implements OnInit {
     if(!localStorage.getItem('user')){
       this.router.navigate(['/']);
     }
+
+    this.messageSubscription = this.webSocketService.getMessages().subscribe(
+      (message) => {
+         this.messages.push({ ...message, side: 'incoming' });
+         //Se usa incoming u outgoing como abajo en enviar mensaje para definir de que lado se muestra el mensaje
+      }
+    );
+
   }
 
   enviarMensaje() {
-    
+    const msgText = this.chatForm.value.mensaje;
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    const message = {
+      type: 'message',
+      from: user.alias || 'desconocido',
+      data: msgText
+    };
+    this.webSocketService.sendMessage(message);
+    this.messages.push({ ...message, side: 'outgoing' });
+    this.chatForm.reset();
+  }
+
+  ngOnDestroy(): void {
+    this.messageSubscription.unsubscribe();
+    this.webSocketService.closeConnection();
   }
 }
