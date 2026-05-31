@@ -53,6 +53,7 @@ frontend/dist
 
 # backend
 backend/vendor
+backend/img/*
 
 # logs
 *.log
