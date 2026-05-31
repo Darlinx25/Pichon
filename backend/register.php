@@ -30,6 +30,10 @@ if (isset($_FILES["imagen"]) && $_FILES["imagen"]["error"] === UPLOAD_ERR_OK) {
     $allowed = ["jpg", "jpeg", "png", "gif", "webp"];
     if (in_array($ext, $allowed)) {
         $filename =  time() . "_" . bin2hex(random_bytes(4)) . "." . $ext;
+        $imgDir = __DIR__ . "/img/";
+        if(!is_dir($imgDir)){
+            mkdir($imgDir, 0755, true);
+        }
         move_uploaded_file($_FILES["imagen"]["tmp_name"], __DIR__ . "/img/" . $filename);
         $imgPath =  $filename;
     }
