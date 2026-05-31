@@ -13,13 +13,13 @@ export class AuthService {
     confirmPassword: string;
   }) {
     return this.http.post<{ success?: boolean; message?: string; error?: string }>(
-      `http://${environment.apiBaseUrl}/register.php`,
+      `${environment.apiBaseUrl}/register.php`,
       data
     );
   }
   login(data: { username: string; password: string }) {
     return this.http.post<{ success?: boolean; user?: any; error?: string }>(
-      `http://${environment.apiBaseUrl}/register.php`,
+      `${environment.apiBaseUrl}/login.php`,
       data
     );
   }

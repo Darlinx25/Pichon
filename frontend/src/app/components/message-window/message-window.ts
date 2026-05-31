@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit,ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink, Router } from '@angular/router';
 import { Sidebar } from '../sidebar/sidebar'
@@ -17,7 +17,7 @@ export class MessageWindow implements OnInit, OnDestroy {
   messages: any[] = [];
   private messageSubscription!: Subscription;
 
-  constructor(private webSocketService: Websocket) {}
+  constructor(private webSocketService: Websocket,private cdr: ChangeDetectorRef) {}
 
   formBuilder = inject(FormBuilder);
   router = inject(Router); 
@@ -35,6 +35,7 @@ export class MessageWindow implements OnInit, OnDestroy {
       (message) => {
          this.messages.push({ ...message, side: 'incoming' });
          //Se usa incoming u outgoing como abajo en enviar mensaje para definir de que lado se muestra el mensaje
+         this.cdr.detectChanges();
       }
     );
 
@@ -54,7 +55,7 @@ export class MessageWindow implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    //this.messageSubscription.unsubscribe();
-    //this.webSocketService.closeConnection();
+    this.messageSubscription.unsubscribe();
+    this.webSocketService.closeConnection();
   }
 }
