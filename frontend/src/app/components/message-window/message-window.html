@@ -4,9 +4,9 @@
         <div #msgContainer style="border: 1px solid #000000; background-color: rgb(236, 236, 236); height: 90%; overflow-y: auto;"
             class="d-flex flex-column p-2">
             @for (msg of messages; track $index) {
-            <div class="mb-1 p-2 rounded shadow-sm" [class.ms-auto]="msg.side === 'outgoing'"
+            <div class="mb-1 p-2 rounded shadow-sm" [class.ms-auto]="msg.side === 'outgoing'" [class.me-auto]="msg.side !== 'outgoing'"
                 [class.bg-primary]="msg.side === 'outgoing'" [class.text-white]="msg.side === 'outgoing'"
-                [class.bg-white]="msg.side !== 'outgoing'" style="max-width: 75%;">
+                [class.bg-white]="msg.side !== 'outgoing'" style="max-width: 70%;">
                 {{ msg.data || msg }}
             </div>
             {{ scrollearAbajo() }}
