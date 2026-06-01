@@ -10,6 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 $conexion = require "./db.php";
 $username = $_POST["username"];
+$email = $_POST["email"];
 $password = $_POST["password"];
 $confirm  = $_POST["confirmPassword"];
 $alias    = $_POST["alias"];
@@ -21,6 +22,12 @@ $sql = "SELECT id FROM usuario WHERE username = '$username'";
 $resultado = mysqli_query($conexion, $sql);
 if (mysqli_num_rows($resultado) > 0) {
     echo json_encode(["error" => "El username ya existe"]);
+    exit;
+}
+$query = "SELECT id FROM usuario WHERE email = '$email'";
+$resultado2 = mysqli_query($conexion, $query);
+if (mysqli_num_rows($resultado2) > 0) {
+    echo json_encode(["error" => "El correo ya está en uso"]);
     exit;
 }
 $hash = password_hash($password, PASSWORD_BCRYPT);
@@ -39,7 +46,7 @@ if (isset($_FILES["imagen"]) && $_FILES["imagen"]["error"] === UPLOAD_ERR_OK) {
     }
 }
 
-$sql = "INSERT INTO usuario (username, password, alias, img) VALUES ('$username', '$hash', '$alias', '$imgPath')";
+$sql = "INSERT INTO usuario (username, email, password, alias, img) VALUES ('$username', '$email', '$hash', '$alias', '$imgPath')";
 if (mysqli_query($conexion, $sql)) {
     echo json_encode(["success" => true, "message" => "Usuario creado correctamente"]);
 } else {

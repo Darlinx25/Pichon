@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql:3306
--- Generation Time: May 27, 2026 at 10:57 PM
+-- Generation Time: Jun 01, 2026 at 07:05 PM
 -- Server version: 8.0.46
 -- PHP Version: 8.3.31
 
@@ -67,6 +67,7 @@ CREATE TABLE `mensaje` (
 CREATE TABLE `usuario` (
   `id` int NOT NULL,
   `username` varchar(30) NOT NULL,
+  `email` varchar(255) NOT NULL,
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `alias` varchar(30) NOT NULL,
   `img` varchar(255) DEFAULT NULL
@@ -76,10 +77,10 @@ CREATE TABLE `usuario` (
 -- Dumping data for table `usuario`
 --
 
-INSERT INTO `usuario` (`id`, `username`, `password`, `alias`, `img`) VALUES
-(1, 'Luis', '1234', 'Lugi', NULL),
-(2, 'facu', '$2y$10$I3SmzRzuWVUF1IkXxvgVI.xq.q1tUkX2wfAH6fx2isA2LKO5d0cUK', 'Pichon', NULL),
-(3, 'Kevin', '$2y$10$fyA2JhG.8A.SYp16Lm14OukC6zEpmoJfDIMZnTYqRHDzdotkxjJvi', 'kevin2', NULL);
+INSERT INTO `usuario` (`id`, `username`, `email`, `password`, `alias`, `img`) VALUES
+(1, 'Luis', '', '1234', 'Lugi', NULL),
+(2, 'facu', '', '$2y$10$I3SmzRzuWVUF1IkXxvgVI.xq.q1tUkX2wfAH6fx2isA2LKO5d0cUK', 'Pichon', NULL),
+(3, 'Kevin', '', '$2y$10$fyA2JhG.8A.SYp16Lm14OukC6zEpmoJfDIMZnTYqRHDzdotkxjJvi', 'kevin2', NULL);
 
 --
 -- Indexes for dumped tables
@@ -89,7 +90,8 @@ INSERT INTO `usuario` (`id`, `username`, `password`, `alias`, `img`) VALUES
 -- Indexes for table `usuario`
 --
 ALTER TABLE `usuario`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `username` (`username`,`email`);
 
 --
 -- AUTO_INCREMENT for dumped tables
