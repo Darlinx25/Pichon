@@ -22,6 +22,7 @@ export class Register implements OnInit {
 
   registerForm = this.formBuilder.group({
     username: ['', [Validators.required, Validators.minLength(3)]],
+    email: ['', [Validators.required, Validators.email]],
     alias: ['', [Validators.required]],
     password: ['', [Validators.required, Validators.minLength(12)]],
     confirmPassword: ['', [Validators.required, Validators.minLength(12)]],
@@ -29,6 +30,10 @@ export class Register implements OnInit {
 
   get username() {
     return this.registerForm.get('username');
+  }
+
+  get email() {
+    return this.registerForm.get('email');
   }
 
   get alias() {
@@ -53,6 +58,7 @@ export class Register implements OnInit {
     if (this.registerForm.invalid) return;
     const formData = new FormData();
     formData.append('username', this.registerForm.get('username')?.value ?? '');
+    formData.append('username', this.registerForm.get('email')?.value ?? '');
     formData.append('alias', this.registerForm.get('alias')?.value ?? '');
     formData.append('password', this.registerForm.get('password')?.value ?? '');
     formData.append('confirmPassword', this.registerForm.get('confirmPassword')?.value ?? '');
