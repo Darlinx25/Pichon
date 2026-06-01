@@ -58,4 +58,13 @@ export class MessageWindow implements OnInit, OnDestroy {
     this.messageSubscription.unsubscribe();
     this.webSocketService.closeConnection();
   }
+
+  manejadorTeclaEnter(event: Event) {
+    const keyboardEvt = event as KeyboardEvent;
+
+    if (!keyboardEvt.shiftKey) {
+      keyboardEvt.preventDefault();
+      this.enviarMensaje();
+    }
+  }
 }
