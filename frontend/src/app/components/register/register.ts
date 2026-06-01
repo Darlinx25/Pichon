@@ -58,7 +58,7 @@ export class Register implements OnInit {
     if (this.registerForm.invalid) return;
     const formData = new FormData();
     formData.append('username', this.registerForm.get('username')?.value ?? '');
-    formData.append('username', this.registerForm.get('email')?.value ?? '');
+    formData.append('email', this.registerForm.get('email')?.value ?? '');
     formData.append('alias', this.registerForm.get('alias')?.value ?? '');
     formData.append('password', this.registerForm.get('password')?.value ?? '');
     formData.append('confirmPassword', this.registerForm.get('confirmPassword')?.value ?? '');
