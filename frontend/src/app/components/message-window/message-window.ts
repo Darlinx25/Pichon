@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit,ChangeDetectorRef } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit,ChangeDetectorRef, AfterViewChecked, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink, Router } from '@angular/router';
 import { Sidebar } from '../sidebar/sidebar'
@@ -13,7 +13,7 @@ import { Websocket } from '../../services/websocketService';
 })
 
 
-export class MessageWindow implements OnInit, OnDestroy {
+export class MessageWindow implements OnInit, OnDestroy  {
   messages: any[] = [];
   private messageSubscription!: Subscription;
 
@@ -42,6 +42,7 @@ export class MessageWindow implements OnInit, OnDestroy {
   }
 
   enviarMensaje() {
+    if (this.chatForm.invalid) return;
     const msgText = this.chatForm.value.mensaje;
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     const message = {
@@ -66,5 +67,13 @@ export class MessageWindow implements OnInit, OnDestroy {
       keyboardEvt.preventDefault();
       this.enviarMensaje();
     }
+  }
+
+  @ViewChild('msgContainer')
+  private msgContainer!: ElementRef;
+
+  scrollearAbajo(): void {
+    const element = this.msgContainer.nativeElement;
+    element.scrollTop = element.scrollHeight;
   }
 }
