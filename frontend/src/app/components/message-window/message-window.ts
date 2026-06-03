@@ -17,6 +17,8 @@ export class MessageWindow implements OnInit, OnDestroy {
   messages: any[] = [];
   private messageSubscription!: Subscription;
   private sonidoNotificacion = new Audio('assets/notification.mp3');
+  private isTabActive = true;
+  private visibilityHandler: any;
 
   constructor(private webSocketService: Websocket, private cdr: ChangeDetectorRef) { }
 
@@ -31,6 +33,11 @@ export class MessageWindow implements OnInit, OnDestroy {
     if (!localStorage.getItem('user')) {
       this.router.navigate(['/']);
     }
+
+    this.visibilityHandler = () => {
+      this.isTabActive = !document.hidden;
+    };
+    document.addEventListener('visibilitychange', this.visibilityHandler);
 
     this.messageSubscription = this.webSocketService.getMessages().subscribe(
       (message) => {
@@ -80,7 +87,9 @@ export class MessageWindow implements OnInit, OnDestroy {
   }
 
   playNotificacion(): void {
-    this.sonidoNotificacion.load();
-    this.sonidoNotificacion.play().catch(err => console.error('Erorr al reproducir audio:', err));
+    if (!this.isTabActive) {
+      this.sonidoNotificacion.load();
+      this.sonidoNotificacion.play().catch(err => console.error('Erorr al reproducir audio:', err));
+    }
   }
 }
