@@ -4,6 +4,7 @@ import { RouterLink, Router } from '@angular/router';
 import { Sidebar } from '../sidebar/sidebar'
 import { Subscription } from 'rxjs';
 import { Websocket } from '../../services/websocketService';
+import { AudioService } from '../../services/audio-service';
 
 @Component({
   selector: 'app-message-window',
@@ -16,11 +17,11 @@ import { Websocket } from '../../services/websocketService';
 export class MessageWindow implements OnInit, OnDestroy {
   messages: any[] = [];
   private messageSubscription!: Subscription;
-  private sonidoNotificacion = new Audio('assets/notification.mp3');
-  private isTabActive = true;
-  private visibilityHandler: any;
 
-  constructor(private webSocketService: Websocket, private cdr: ChangeDetectorRef) { }
+  constructor(
+    private webSocketService: Websocket,
+    private cdr: ChangeDetectorRef,
+    private audioService: AudioService) { }
 
   formBuilder = inject(FormBuilder);
   router = inject(Router);
@@ -34,17 +35,12 @@ export class MessageWindow implements OnInit, OnDestroy {
       this.router.navigate(['/']);
     }
 
-    this.visibilityHandler = () => {
-      this.isTabActive = !document.hidden;
-    };
-    document.addEventListener('visibilitychange', this.visibilityHandler);
-
     this.messageSubscription = this.webSocketService.getMessages().subscribe(
       (message) => {
         this.messages.push({ ...message, side: 'incoming' });
         //Se usa incoming u outgoing como abajo en enviar mensaje para definir de que lado se muestra el mensaje
         this.cdr.detectChanges();
-        this.playNotificacion();
+        this.audioService.playNotificacion();
       }
     );
 
@@ -84,12 +80,5 @@ export class MessageWindow implements OnInit, OnDestroy {
   scrollearAbajo(): void {
     const element = this.msgContainer.nativeElement;
     element.scrollTop = element.scrollHeight;
-  }
-
-  playNotificacion(): void {
-    if (!this.isTabActive) {
-      this.sonidoNotificacion.load();
-      this.sonidoNotificacion.play().catch(err => console.error('Erorr al reproducir audio:', err));
-    }
   }
 }
