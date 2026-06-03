@@ -1,5 +1,9 @@
 <div class="d-flex flex-column vh-100 bg-light">
-    <div style="border: 1px solid #000000; height: 10%;" class="d-flex justify-content-center align-items-center">[search]</div>
+    <div style="border: 1px solid #000000; height: 10%;" class="d-flex justify-content-center align-items-center">
+        <form [formGroup]="searchForm" class="d-flex">
+            <input id="busqueda" formControlName="busqueda" class="form-control" type="search" placeholder="buscar usuario" aria-label="buscar usuario"/>
+        </form>
+    </div>
     <div style="border: 1px solid #000000; height: 80%;" class="d-flex justify-content-center align-items-center">[contacts]</div>
     <div style="border: 1px solid #000000; height: 10%;" class="d-flex justify-content-center align-items-center">
         @if (user.img) {
