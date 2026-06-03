@@ -1,6 +1,6 @@
 <?php
-$servidor = "127.0.0.1";
-$puerto = 3307;
+$servidor = "mysql";
+$puerto = 3306;
 $usuario = "pichon_user";
 $contrasena = "pichon_pass";
 $base_datos = "pichon_db";
