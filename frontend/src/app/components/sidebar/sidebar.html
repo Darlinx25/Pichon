@@ -1,18 +1,47 @@
 <div class="d-flex flex-column vh-100 bg-light">
-    <div style="border: 1px solid #000000; height: 10%;" class="d-flex justify-content-center align-items-center">
-        <form [formGroup]="searchForm" class="d-flex">
-            <input id="busqueda" formControlName="busqueda" class="form-control" type="search" placeholder="buscar usuario" aria-label="buscar usuario"/>
+    <div class="position-relative p-3" style="border:1px solid #000;height:10%;z-index:1000;">
+        <form [formGroup]="searchForm">
+            <input id="busqueda" formControlName="busqueda" class="form-control" type="search"
+                placeholder="buscar usuario" aria-label="buscar usuario" />
         </form>
+
+        @if (usuariosEncontrados.length > 0) {
+        <div class="position-absolute bg-white border rounded shadow" style="
+                    top: calc(100% - 10px);
+                    left: 8px;
+                    right: 8px;
+                    max-height: 300px;
+                    overflow-y: auto;
+                    z-index: 99999;
+                ">
+            @for (usuario of usuariosEncontrados; track usuario.id) {
+            <div class="d-flex align-items-center gap-2 p-2 border-bottom" style="cursor:pointer;"
+                (click)="seleccionarUsuario(usuario)">
+                @if (usuario.img) {
+                <img [src]="apiBaseUrl + '/img/' + usuario.img" alt="avatar" style="
+                                    width:40px;
+                                    height:40px;
+                                    border-radius:50%;
+                                    object-fit:cover;
+                                " />
+                }
+
+                <span>{{ usuario.alias }}</span>
+            </div>
+            }
+        </div>
+        }
     </div>
-    <div style="border: 1px solid #000000; height: 80%;" class="d-flex justify-content-center align-items-center">[contacts]</div>
+    <div style="border: 1px solid #000000; height: 80%;" class="d-flex justify-content-center align-items-center">
+        [contacts]</div>
     <div style="border: 1px solid #000000; height: 10%;" class="d-flex justify-content-center align-items-center">
         @if (user.img) {
-            <img [src]="apiBaseUrl + '/img/' + user.img" alt="avatar" style="width:60px;height:60px;border-radius:50%;" />
-            
+        <img [src]="apiBaseUrl + '/img/' + user.img" alt="avatar" style="width:60px;height:60px;border-radius:50%;" />
+
         }
-        
+
         <span>{{ user.alias }}</span>
-    <button (click)="cerrarSesion()">Cerrar sesión</button> 
-        
+        <button (click)="cerrarSesion()">Cerrar sesión</button>
+
     </div>
 </div>
