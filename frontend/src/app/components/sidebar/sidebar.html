@@ -39,8 +39,17 @@
         </div>
         }
     </div>
-    <div style="border: 1px solid #000000; height: 80%;" class="d-flex justify-content-center align-items-center">
-        [contacts]</div>
+    <div style="border: 1px solid #000000; height: 80%; overflow-y: auto;" class="d-flex  d-flex flex-column p-2 ">
+        
+
+         @for (user of listaUsuarios; track $index) {
+            <div class="border-bottom py-4 mb-2">
+                <img [src]="apiBaseUrl + '/img/' + user.img" alt="avatar" style="width:60px;height:60px;border-radius:50%;" />
+                {{ user.alias }}
+            </div>
+        }
+ 
+    </div>
     <div style="border: 1px solid #000000; height: 10%;" class="d-flex justify-content-center align-items-center">
         @if (user.img) {
         <img [src]="apiBaseUrl + '/img/' + user.img" alt="avatar" style="width:60px;height:60px;border-radius:50%;" />

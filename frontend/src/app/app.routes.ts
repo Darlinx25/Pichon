@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { Register } from './components/register/register'
 import { Login } from './components/login/login'
 import { MessageWindow } from './components/message-window/message-window'
-import { Usuarios } from './usuarios/usuarios';
+import { Usuarios } from './components/usuarios/usuarios';
 export const routes: Routes = [
     { path: 'register', component: Register},
     { path: 'login', component: Login},

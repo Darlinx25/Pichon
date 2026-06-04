@@ -26,6 +26,7 @@ export class Sidebar {
   private formBuilder = inject(FormBuilder);
 
   usuariosEncontrados: any[] = [];
+  listaUsuarios: any [] = [];
 
   searchForm = this.formBuilder.group({
     busqueda: ['']
@@ -50,6 +51,17 @@ export class Sidebar {
         this.usuariosEncontrados = usuarios;
         this.cdr.detectChanges();
       });
+
+      //Luego remplazamos listarUsuarios por ListarContactos y listo
+      this.userService.listarUsuarios().subscribe((usuarios) => {
+      console.log('Respuesta:', usuarios);
+      this.listaUsuarios = usuarios;
+      this.cdr.detectChanges();
+      });
+       
+
+
+
   }
 
   seleccionarUsuario(usuario: any) {

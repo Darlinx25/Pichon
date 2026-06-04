@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { UserService } from '../services/user-service';
+import { UserService } from '../../services/user-service';
 
 @Component({
   selector: 'app-usuarios',
