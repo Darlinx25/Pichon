@@ -2,15 +2,15 @@
     <div>
         <a style="color: rgb(43, 43, 206);" routerLink="/chat">Chat</a>
     </div>
-    <div #msgContainer
-        style="border: 1px solid #000000; background-color: rgb(236, 236, 236); height: 90%; overflow-y: auto;"
-        class="d-flex flex-column p-2">
-         @for (user of usuariosEncontrados; track $index) {
-            <div class="border-bottom py-2">
+    <div style="border: 1px solid #000000; height: 80%; overflow-y: auto;" class="d-flex  d-flex flex-column p-2 ">
+        
 
+         @for (user of usuariosEncontrados; track $index) {
+            <div class="border-bottom py-4 mb-2">
+                <img [src]="apiBaseUrl + '/img/' + user.img" alt="avatar" style="width:60px;height:60px;border-radius:50%;" />
                 {{ user.alias }}
-                
             </div>
         }
+ 
     </div>
 </div>
