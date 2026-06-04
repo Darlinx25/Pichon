@@ -14,4 +14,11 @@ export class UserService {
       `${environment.apiBaseUrl}/buscarUsuarios.php?search=${encodeURIComponent(texto)}`
     );
   }
+
+  listarUsuarios(){
+    return this.http.get<any[]>(
+      `${environment.apiBaseUrl}/listarUsuarios.php`
+    );
+  }
+
 }

@@ -1,0 +1,16 @@
+<div>
+    <div>
+        <a style="color: rgb(43, 43, 206);" routerLink="/chat">Chat</a>
+    </div>
+    <div #msgContainer
+        style="border: 1px solid #000000; background-color: rgb(236, 236, 236); height: 90%; overflow-y: auto;"
+        class="d-flex flex-column p-2">
+         @for (user of usuariosEncontrados; track $index) {
+            <div class="border-bottom py-2">
+
+                {{ user.alias }}
+                
+            </div>
+        }
+    </div>
+</div>

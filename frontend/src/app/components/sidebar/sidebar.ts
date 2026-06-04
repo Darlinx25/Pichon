@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router,RouterLink } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { UserService } from '../../services/user-service';
@@ -9,7 +9,7 @@ import { debounceTime, distinctUntilChanged, filter, of, switchMap } from 'rxjs'
 
 @Component({
   selector: 'app-sidebar',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.scss',
 })

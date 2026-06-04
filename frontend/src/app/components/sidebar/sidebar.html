@@ -1,9 +1,16 @@
 <div class="d-flex flex-column vh-100 bg-light">
     <div class="position-relative p-3" style="border:1px solid #000;height:10%;z-index:1000;">
-        <form [formGroup]="searchForm">
-            <input id="busqueda" formControlName="busqueda" class="form-control" type="search"
-                placeholder="buscar usuario" aria-label="buscar usuario" />
-        </form>
+        <div class="d-flex gap-3 align-items-start">
+            <div >
+                <form [formGroup]="searchForm">
+                    <input id="busqueda" formControlName="busqueda" class="form-control" type="search"
+                        placeholder="buscar usuario" aria-label="buscar usuario" />
+                </form>
+            </div>
+            <div>
+                <a style="color: rgb(43, 43, 206);" routerLink="/usuarios">Usuarios</a>
+            </div>
+        </div>
 
         @if (usuariosEncontrados.length > 0) {
         <div class="position-absolute bg-white border rounded shadow" style="
@@ -41,7 +48,10 @@
         }
 
         <span>{{ user.alias }}</span>
+
         <button (click)="cerrarSesion()">Cerrar sesión</button>
 
     </div>
+
+
 </div>
