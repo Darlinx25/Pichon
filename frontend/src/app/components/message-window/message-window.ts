@@ -114,4 +114,9 @@ export class MessageWindow implements OnInit, OnDestroy {
     const element = this.msgContainer.nativeElement;
     element.scrollTop = element.scrollHeight;
   }
+  
+  onImageError(event: Event): void {
+  const img = event.target as HTMLImageElement;
+  img.src = 'assets/default-avatar.jpg';
+}
 }

@@ -4,8 +4,14 @@
         @if (selectedUser) {
         <div style="border:1px solid #000;background:#f0f0f0;height:8%;" class="d-flex align-items-center px-3 gap-2">
             @if (selectedUser.img) {
-            <img [src]="apiBaseUrl + '/img/' + selectedUser.img" alt="avatar"
-                style="width:40px;height:40px;border-radius:50%;object-fit:cover;" />
+                
+            <img
+            [src]="user.img
+                ? apiBaseUrl + '/img/' + selectedUser.img
+                : 'assets/default-avatar.jpg'"
+            (error)="onImageError($event)"
+            alt="avatar"
+            style="width:60px;height:60px;border-radius:50%;object-fit:cover;" />
             }
             <span class="fw-bold">{{ selectedUser.alias }}</span>
         </div> 

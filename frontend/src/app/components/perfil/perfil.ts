@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Router,RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { environment } from '../../../environments/environment';
 
 @Component({
@@ -13,9 +13,13 @@ export class Perfil {
   user = JSON.parse(localStorage.getItem('user') || '{}');
   apiBaseUrl = environment.apiBaseUrl;
 
-   cerrarSesion() {
+  cerrarSesion() {
     localStorage.removeItem('user');
     this.router.navigate(['/']);
   }
 
+  onImageError(event: Event): void {
+    const img = event.target as HTMLImageElement;
+    img.src = 'assets/default-avatar.jpg';
+  }
 }

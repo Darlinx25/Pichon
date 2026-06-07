@@ -27,4 +27,9 @@ export class Usuarios implements OnInit {
       this.cdr.detectChanges();
     });
   }
+
+  onImageError(event: Event): void {
+    const img = event.target as HTMLImageElement;
+    img.src = 'assets/default-avatar.jpg';
+  }
 }

@@ -3,14 +3,17 @@
         <a style="color: rgb(43, 43, 206);" routerLink="/chat">Chat</a>
     </div>
     <div style="border: 1px solid #000000; height: 80%; overflow-y: auto;" class="d-flex  d-flex flex-column p-2 ">
-        
 
-         @for (user of usuariosEncontrados; track $index) {
-            <div class="border-bottom py-4 mb-2">
-                <img [src]="apiBaseUrl + '/img/' + user.img" alt="avatar" style="width:60px;height:60px;border-radius:50%;" />
-                {{ user.alias }}
-            </div>
+
+        @for (user of usuariosEncontrados; track $index) {
+        <div class="border-bottom py-4 mb-2">
+            <img [src]="user.img
+                    ? apiBaseUrl + '/img/' + user.img
+                    : 'assets/default-avatar.jpg'" (error)="onImageError($event)" alt="avatar"
+                style="width:60px;height:60px;border-radius:50%;object-fit:cover;" />
+            {{ user.alias }}
+        </div>
         }
- 
+
     </div>
 </div>
