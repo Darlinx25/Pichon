@@ -13,14 +13,17 @@ export class Websocket {
   private messagesSubject = new Subject<any>();
 
   constructor(private ngZone: NgZone) {
-    //ip hardcodeada, luego configurar apache http como reverse proxy para el server WS
-    //y usar el puerto estándar 80
     this.socket$ = webSocket(environment.wsUrl);;
 
     this.socket$.subscribe({
       next: (msg) => this.ngZone.run(() => this.messagesSubject.next(msg)),
       error: (err) => console.error('[WS] Error:', err),
     });
+
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    if (user.id){
+      this.socket$.next({ type: 'auth', userId: user.id });
+    } 
   }
 
   sendMessage(message: any) {
@@ -34,4 +37,9 @@ export class Websocket {
   closeConnection() {
     this.socket$.complete();
   }
+
+  authenticate(userId: number) {
+    this.socket$.next({ type: 'auth', userId });
+  }
+
 }

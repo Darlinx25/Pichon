@@ -5,6 +5,10 @@ import { Sidebar } from '../sidebar/sidebar'
 import { Subscription } from 'rxjs';
 import { Websocket } from '../../services/websocketService';
 import { AudioService } from '../../services/audio-service';
+import { HttpClient } from '@angular/common/http';
+import { ChatService } from '../../services/chat-servise';
+import { environment } from '../../../environments/environment';
+
 
 @Component({
   selector: 'app-message-window',
@@ -13,15 +17,21 @@ import { AudioService } from '../../services/audio-service';
   styleUrl: './message-window.scss',
 })
 
-
 export class MessageWindow implements OnInit, OnDestroy {
   messages: any[] = [];
-  private messageSubscription!: Subscription;
+  selectedUser: any = null;
+  chatId: number | null = null;
+  user = JSON.parse(localStorage.getItem('user') || '{}');
+  apiBaseUrl = environment.apiBaseUrl;
 
   constructor(
     private webSocketService: Websocket,
     private cdr: ChangeDetectorRef,
+    private chatService: ChatService,
+    private http: HttpClient,
     private audioService: AudioService) { }
+    private userSub!: Subscription;
+    private messageSub!: Subscription;
 
   formBuilder = inject(FormBuilder);
   router = inject(Router);
@@ -31,38 +41,61 @@ export class MessageWindow implements OnInit, OnDestroy {
   });
 
   ngOnInit() {
-    if (!localStorage.getItem('user')) {
-      this.router.navigate(['/']);
-    }
+    if (!this.user.id) { this.router.navigate(['/']); return; }
+    this.userSub = this.chatService.selectedUser$.subscribe(user => {
+      this.selectedUser = user;
+      this.cargarChat(user.id);
+    });
+    this.messageSub = this.webSocketService.getMessages().subscribe(msg => {
+      if (msg.type !== 'message' || msg.chatId !== this.chatId || msg.fromId === this.user.id) return;
+      this.messages.push({ ...msg, side: 'incoming' });
+      this.cdr.detectChanges();
+      this.audioService.playNotificacion();
+    });
+  }
 
-    this.messageSubscription = this.webSocketService.getMessages().subscribe(
-      (message) => {
-        this.messages.push({ ...message, side: 'incoming' });
-        //Se usa incoming u outgoing como abajo en enviar mensaje para definir de que lado se muestra el mensaje
-        this.cdr.detectChanges();
-        this.audioService.playNotificacion();
+  cargarChat(idUsuario: number): void {
+    this.http.get<any>(`${this.apiBaseUrl}/obtenerChat.php`, {
+      params: {
+        id_usuario1: this.user.id,
+        id_usuario2: idUsuario
       }
-    );
+    }).subscribe(response => {
+      this.chatId = response.id_chat;
+      const mensajes = response.messages ?? [];
+      this.messages = mensajes.map((mensaje: any) => {
+        const esMio = mensaje.id_usuario === Number(this.user.id);
 
+        return {
+          data: mensaje.contenido,
+          fromId: mensaje.id_usuario,
+          side: esMio ? 'outgoing' : 'incoming'
+        };
+      });
+
+      this.cdr.detectChanges();
+    });
   }
 
   enviarMensaje() {
-    if (this.chatForm.invalid) return;
-    const msgText = this.chatForm.value.mensaje;
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
-    const message = {
+    if (this.chatForm.invalid || !this.selectedUser || !this.chatId) return;
+    const msg = {
       type: 'message',
-      from: user.alias || 'desconocido',
-      data: msgText
+      from: this.user.alias,
+      fromId: this.user.id,
+      to: this.selectedUser.id,
+      chatId: this.chatId,
+      data: this.chatForm.value.mensaje
     };
-    this.webSocketService.sendMessage(message);
-    this.messages.push({ ...message, side: 'outgoing' });
+    this.webSocketService.sendMessage(msg);
+    this.messages.push({ ...msg, side: 'outgoing' });
     this.chatForm.reset();
   }
 
+
   ngOnDestroy(): void {
-    this.messageSubscription.unsubscribe();
-    this.webSocketService.closeConnection();
+    this.messageSub?.unsubscribe();
+    this.userSub?.unsubscribe();
   }
 
   manejadorTeclaEnter(event: Event) {

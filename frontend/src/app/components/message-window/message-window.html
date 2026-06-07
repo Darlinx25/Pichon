@@ -1,26 +1,40 @@
 <div class="d-flex vh-100">
     <app-sidebar class="w-25" />
     <div class="d-flex flex-column flex-grow-1">
-        <div #msgContainer style="border: 1px solid #000000; background-color: rgb(236, 236, 236); height: 90%; overflow-y: auto;"
+        @if (selectedUser) {
+        <div style="border:1px solid #000;background:#f0f0f0;height:8%;" class="d-flex align-items-center px-3 gap-2">
+            @if (selectedUser.img) {
+            <img [src]="apiBaseUrl + '/img/' + selectedUser.img" alt="avatar"
+                style="width:40px;height:40px;border-radius:50%;object-fit:cover;" />
+            }
+            <span class="fw-bold">{{ selectedUser.alias }}</span>
+        </div> 
+        <div #msgContainer style="border:1px solid #000;background:rgb(236,236,236);height:82%;overflow-y:auto;"
             class="d-flex flex-column p-2">
             @for (msg of messages; track $index) {
-            <div class="mb-1 p-2 rounded shadow-sm" [class.ms-auto]="msg.side === 'outgoing'" [class.me-auto]="msg.side !== 'outgoing'"
-                [class.bg-primary]="msg.side === 'outgoing'" [class.text-white]="msg.side === 'outgoing'"
-                [class.bg-white]="msg.side !== 'outgoing'" style="max-width: 70%;">
-                {{ msg.data || msg }}
+            <div class="mb-1 p-2 rounded shadow-sm" [class.ms-auto]="msg.side === 'outgoing'"
+                [class.me-auto]="msg.side !== 'outgoing'" [class.bg-primary]="msg.side === 'outgoing'"
+                [class.text-white]="msg.side === 'outgoing'" [class.bg-white]="msg.side !== 'outgoing'"
+                style="max-width:70%;">
+                {{ msg.data }}
             </div>
             {{ scrollearAbajo() }}
             }
         </div>
-        <div style="border: 1px solid #000000; background-color: rgb(236, 236, 236); height: 10%;"
+        } @else {
+        <div class="d-flex flex-column justify-content-center align-items-center flex-grow-1"
+            style="background:rgb(236,236,236);">
+            <p class="text-muted fs-5">Seleccioná un usuario para empezar a chatear</p>
+        </div>
+        }
+        <div style="border:1px solid #000;background:rgb(236,236,236);height:10%;"
             class="d-flex justify-content-center align-items-center">
             <form id="chat-form" [formGroup]="chatForm" (ngSubmit)="enviarMensaje()">
                 <div class="input-group h-100">
-                    <textarea formControlName="mensaje" (keydown.enter)="manejadorTeclaEnter($event)" class="form-control" placeholder="Escribe algo..." rows="1"
-                        style="resize: none;"></textarea>
-                    <button class="btn btn-primary" type="submit" [disabled]="chatForm.invalid">
-                        Enviar
-                    </button>
+                    <textarea formControlName="mensaje" (keydown.enter)="manejadorTeclaEnter($event)"
+                        class="form-control" placeholder="Escribe algo..." rows="1" style="resize:none;"></textarea>
+                    <button class="btn btn-primary" type="submit"
+                        [disabled]="chatForm.invalid || !selectedUser">Enviar</button>
                 </div>
             </form>
         </div>

@@ -4,6 +4,7 @@ import { environment } from '../../../environments/environment';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { UserService } from '../../services/user-service';
 import { debounceTime, distinctUntilChanged, filter, of, switchMap } from 'rxjs';
+import { ChatService } from '../../services/chat-servise';
 
 
 
@@ -32,7 +33,11 @@ export class Sidebar {
     busqueda: ['']
   });
 
-  constructor(private userService: UserService, private cdr: ChangeDetectorRef) { }
+  constructor(
+    private userService: UserService,
+    private cdr: ChangeDetectorRef,
+    private chatService: ChatService
+  ) { }
 
   ngOnInit() {
     this.searchForm.get('busqueda')?.valueChanges
@@ -65,11 +70,7 @@ export class Sidebar {
   }
 
   seleccionarUsuario(usuario: any) {
-    console.log(usuario);
-
-    //ver cómo pasar a campo del chat luego de clickear
-    //y como ponerlo a la izquierda en chats "activos"
-
+    this.chatService.selectUser(usuario);
     this.usuariosEncontrados = [];
   }
 }

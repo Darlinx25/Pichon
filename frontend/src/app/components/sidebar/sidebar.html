@@ -43,7 +43,7 @@
         
 
          @for (user of listaUsuarios; track $index) {
-            <div class="border-bottom py-4 mb-2">
+            <div class="border-bottom py-4 mb-2" (click)="seleccionarUsuario(user)" style="cursor:pointer;">
                 <img [src]="apiBaseUrl + '/img/' + user.img" alt="avatar" style="width:60px;height:60px;border-radius:50%;" />
                 {{ user.alias }}
             </div>

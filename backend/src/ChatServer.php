@@ -5,37 +5,44 @@ use Ratchet\ConnectionInterface;
 
 class ChatServer implements MessageComponentInterface
 {
-    
     protected \SplObjectStorage $clients;
-    protected array $userConnections; // id_usuario => [conn, conn, ...]
+    protected array $userConnections;
 
     public function __construct()
     {
         $this->clients = new \SplObjectStorage();
-    }
-
-    private function connectDb(): void
-    {
-        $conexion = require "./db.php";
-        //Ver luego resto de logica con DB
+        $this->userConnections = [];
     }
 
     public function onOpen(ConnectionInterface $conn): void
     {
         $this->clients->attach($conn);
+        $conn->userId = null;
     }
 
-    public function onMessage(ConnectionInterface $from, $msg): void
-    {
-        //$data = json_decode($msg, true);
-        $numRecv = count($this->clients) - 1;
-        echo sprintf('Connection %d sending message "%s" to %d other connection%s' . "\n"
-            , $from->resourceId, $msg, $numRecv, $numRecv == 1 ? '' : 's');
+    public function onMessage(ConnectionInterface $from, $msg): void{
+        $data = json_decode($msg, true);
+        if (!$data || !isset($data['type'])) return;
 
-        foreach ($this->clients as $client) {
-            if ($from !== $client) {
-                $client->send($msg);
-            }
+        if ($data['type'] === 'auth') {
+            $from->userId = (int)$data['userId'];
+            $this->userConnections[(int)$data['userId']][] = $from;
+            return;
+        }
+
+        if ($data['type'] !== 'message') return;
+
+        $db = require __DIR__ . '/../db.php';
+        $texto = mysqli_real_escape_string($db, $data['data']);
+        $chatId = (int)$data['chatId'];
+        $fromId = (int)$data['fromId'];
+        $toId = (int)$data['to'];
+
+        mysqli_query($db, "INSERT INTO mensaje (id_chat, id_usuario, contenido, fecha) 
+            VALUES ($chatId, $fromId, '$texto', NOW())");
+
+        if (isset($this->userConnections[$toId])) {
+            foreach ($this->userConnections[$toId] as $c) $c->send($msg);
         }
     }
 

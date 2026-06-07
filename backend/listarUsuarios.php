@@ -13,7 +13,7 @@ $conexion = require "./db.php";
 $search = $_GET['search'] ?? '';
 
 $query = $conexion->prepare(
-    "SELECT username, alias, img FROM usuario"
+    "SELECT id, username, alias, img FROM usuario"
 );
 
 $query->execute();
