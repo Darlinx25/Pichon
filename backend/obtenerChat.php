@@ -19,7 +19,7 @@ if (!$id_chat) {
     $id_chat = (int)mysqli_insert_id($conexion);
 }
 
-$result = mysqli_query($conexion, "SELECT id_fmensaje, id_usuario, contenido, fecha 
+$result = mysqli_query($conexion, "SELECT id_mensaje, id_usuario, contenido, fecha 
     FROM mensaje WHERE id_chat = $id_chat ORDER BY fecha ASC");
 
 $messages = [];
@@ -34,4 +34,4 @@ while ($row = mysqli_fetch_assoc($result)) {
 
 echo json_encode(['id_chat' => $id_chat, 'messages' => $messages]);
 
-?>f
+?>
