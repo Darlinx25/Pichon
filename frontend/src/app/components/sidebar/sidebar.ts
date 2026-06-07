@@ -69,4 +69,9 @@ export class Sidebar {
     this.chatService.selectUser(usuario);
     this.usuariosEncontrados = [];
   }
+  
+  onImageError(event: Event): void {
+  const img = event.target as HTMLImageElement;
+  img.src = 'assets/default-avatar.jpg';
+}
 }
