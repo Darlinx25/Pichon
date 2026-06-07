@@ -19,10 +19,6 @@ export class Sidebar {
   user = JSON.parse(localStorage.getItem('user') || '{}');
   apiBaseUrl = environment.apiBaseUrl;
 
-  cerrarSesion() {
-    localStorage.removeItem('user');
-    this.router.navigate(['/']);
-  }
 
   private formBuilder = inject(FormBuilder);
 

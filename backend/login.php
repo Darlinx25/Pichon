@@ -14,7 +14,7 @@ $data = json_decode(file_get_contents("php://input"), true);
 $username = $data["username"];
 $password = $data["password"];
 
-$sql = "SELECT id, username, password, alias, img FROM usuario WHERE username = '$username'";
+$sql = "SELECT id, username, email, password, alias, img FROM usuario WHERE username = '$username'";
 $resultado = mysqli_query($conexion, $sql);
 if (mysqli_num_rows($resultado) == 0) {
     echo json_encode(["error" => "Credenciales inválidas"]);
@@ -31,6 +31,7 @@ echo json_encode([
         "id"       => $user["id"],
         "username" => $user["username"],
         "alias"    => $user["alias"],
-        "img"      => $user["img"]
+        "img"      => $user["img"],
+        "email"      => $user["email"]
     ]
 ]);
