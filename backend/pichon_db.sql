@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql:3306
--- Generation Time: Jun 07, 2026 at 03:34 PM
+-- Generation Time: Jun 08, 2026 at 08:54 PM
 -- Server version: 8.0.46
 -- PHP Version: 8.3.31
 
@@ -46,7 +46,13 @@ INSERT INTO `chat` (`id_chat`, `id_usuario1`, `id_usuario2`) VALUES
 (6, 8, 5),
 (7, 7, 6),
 (8, 7, 7),
-(9, 8, 6);
+(9, 8, 6),
+(10, 9, 4),
+(11, 9, 7),
+(12, 9, 8),
+(13, 9, 5),
+(14, 9, 6),
+(15, 9, 9);
 
 -- --------------------------------------------------------
 
@@ -92,6 +98,27 @@ INSERT INTO `mensaje` (`id_mensaje`, `id_chat`, `id_usuario`, `contenido`, `fech
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `perfil`
+--
+
+CREATE TABLE `perfil` (
+  `id` int NOT NULL,
+  `genero` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `fecha_nacimiento` date DEFAULT NULL,
+  `idioma` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `estado` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `perfil`
+--
+
+INSERT INTO `perfil` (`id`, `genero`, `fecha_nacimiento`, `idioma`, `estado`) VALUES
+(10, NULL, NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `usuario`
 --
 
@@ -113,7 +140,9 @@ INSERT INTO `usuario` (`id`, `username`, `email`, `password`, `alias`, `img`) VA
 (5, 'alexis', 'asdasdq@asd.com', '$2y$10$22qLcBxbUVGimHqamx7XHOJBa5Jx3cyWivhnQQ6FzrxYNik9NShdW', 'alexis', '1780840011_5c2d8158.gif'),
 (6, 'ignacio', 'asdasd@asd.com', '$2y$10$lIu06pZoWjedBGUKRzUJsOAMwDg3FPMhuafA3CavXrhEvPKlWglOS', 'ignacio', '1780840022_176b97ef.webp'),
 (7, 'kevin', 'as@kevin.com', '$2y$10$g2fLdefRERbmCZQdGv.qe.T76206OefVcvrYi01BVx7t4Ffoe3yOG', 'kevin chanfle', '1780840043_eae2a7ee.jpg'),
-(8, 'duko', 'sanchez@corrupto.com', '$2y$10$VawAK36iLjaq3i4pKGNtLO.udBGupXujOaH1mOomlI190nclMGXAq', 'Duko', '1780840101_0eb5cee9.jpg');
+(8, 'duko', 'sanchez@corrupto.com', '$2y$10$VawAK36iLjaq3i4pKGNtLO.udBGupXujOaH1mOomlI190nclMGXAq', 'Duko', '1780840101_0eb5cee9.jpg'),
+(9, 'pepe', 'pepelol@hotmail.com', '$2y$10$Rab220B8mi9s3IG4U1vtY.YhzXTno9GAuRBYijxDF/KLKmBCc9pM2', 'pepelol', '1780864631_00ab0de9.jpg'),
+(10, 'lolito', 'lolito@lolo.com', '$2y$10$oybGvCAfwUHgAgneH8/zeOWE6H.LY0Nz5AWl9idOz4J/S.oYUa/NK', 'Lolito Garza', '1780951962_51202b01.jpg');
 
 --
 -- Indexes for dumped tables
@@ -132,6 +161,12 @@ ALTER TABLE `mensaje`
   ADD PRIMARY KEY (`id_mensaje`);
 
 --
+-- Indexes for table `perfil`
+--
+ALTER TABLE `perfil`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `usuario`
 --
 ALTER TABLE `usuario`
@@ -146,7 +181,7 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT for table `chat`
 --
 ALTER TABLE `chat`
-  MODIFY `id_chat` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_chat` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `mensaje`
@@ -158,7 +193,17 @@ ALTER TABLE `mensaje`
 -- AUTO_INCREMENT for table `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `perfil`
+--
+ALTER TABLE `perfil`
+  ADD CONSTRAINT `id_perfil` FOREIGN KEY (`id`) REFERENCES `usuario` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

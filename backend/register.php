@@ -48,8 +48,21 @@ if (isset($_FILES["imagen"]) && $_FILES["imagen"]["error"] === UPLOAD_ERR_OK) {
 
 $sql = "INSERT INTO usuario (username, email, password, alias, img) VALUES ('$username', '$email', '$hash', '$alias', '$imgPath')";
 if (mysqli_query($conexion, $sql)) {
-    echo json_encode(["success" => true, "message" => "Usuario creado correctamente"]);
+    $idUsuario = mysqli_insert_id($conexion);
+    $sql2 = "INSERT INTO perfil (id) VALUES ($idUsuario)";
+    if (mysqli_query($conexion, $sql2)) {
+        echo json_encode([
+            "success" => true,
+            "message" => "Usuario creado correctamente"
+        ]);
+    } else {
+        echo json_encode([
+            "error" => "Error al crear el perfil"
+        ]);
+    }
 } else {
     echo json_encode(["error" => "Error al crear usuario"]);
 }
+
+
 ?>
