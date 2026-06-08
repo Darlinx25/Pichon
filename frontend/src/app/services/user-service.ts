@@ -21,4 +21,8 @@ export class UserService {
     );
   }
 
+  getPerfil(id: number) {
+  return this.http.get<any>(`${environment.apiBaseUrl}/perfil.php?id=${id}`);
+}
+
 }
