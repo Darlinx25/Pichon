@@ -17,14 +17,12 @@
     </div>
     <div class="d-flex gap-3 mt-4">
         <a routerLink="/chat" class="btn btn-primary">Regresar</a>
-<<<<<<< HEAD
-        <a routerLink="/editar-perfil" class="btn btn-regresar">Editar</a>    
-=======
+        
         @if (esMiPerfil()) {
         <a routerLink="/editar-perfil" class="btn btn-outline-dark">Editar</a>
         }
         @if (esMiPerfil()) {
->>>>>>> 06cd1cc (ver perfil usuario ajeno)
+
         <button class="btn btn-danger" (click)="cerrarSesion()">Cerrar sesión</button>
         }
     </div>
