@@ -1,3 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 @import 'variables';
 @import 'bootstrap/scss/bootstrap';
+
+body {
+  background-image:
+    radial-gradient(1400px 1000px at 12% 8%, rgba(123, 191, 153, 0.06), transparent 60%),
+    radial-gradient(1200px 900px at 86% 84%, rgba(200, 160, 106, 0.06), transparent 60%),
+    linear-gradient(180deg, #0f151c 0%, #0b1016 54%, #0a0f14 100%);
+  background-attachment: fixed;
+}

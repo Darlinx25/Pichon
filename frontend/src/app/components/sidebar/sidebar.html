@@ -1,12 +1,12 @@
-<div class="d-flex flex-column vh-100 bg-light border-end">
+<div class="d-flex flex-column vh-100 border-end">
 
-    <div class="position-relative p-3 border" style="height:100px;z-index:1000;">
+    <div class="position-relative p-3 " style="height:100px;z-index:1000;">
         <div class="d-flex gap-3 align-items-start">
             <form [formGroup]="searchForm">
                 <input id="busqueda" formControlName="busqueda" class="form-control" type="search"
                     placeholder="buscar usuario" aria-label="buscar usuario" />
             </form>
-            <a class="link-primary" routerLink="/usuarios">Usuarios</a>
+            <a class="btn btn-primary" routerLink="/usuarios">Usuarios</a>
         </div>
 
         @if (usuariosEncontrados.length > 0) {
@@ -31,7 +31,7 @@
         }
     </div>
 
-    <ul class="nav nav-tabs">
+    <ul class="nav nav-pills ">
         <li class="nav-item">
             <button class="nav-link active" id="chat-tab" data-bs-toggle="tab" data-bs-target="#chat" type="button">
                 Chats
