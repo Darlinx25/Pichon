@@ -10,14 +10,22 @@
         <div><strong>Usuario:</strong> {{ perfilData.username }}</div>
         <div><strong>Alias:</strong> {{ perfilData.alias }}</div>
         <div><strong>Correo:</strong> {{ perfilData.email }}</div>
-        <div><strong>Género:</strong> {{ perfilData.genero }}</div>
-        <div><strong>Fecha de nacimiento:</strong> {{ perfilData?.fecha_nacimiento }}</div>
-        <div><strong>Idioma:</strong> {{ perfilData.idioma }}</div>
-        <div><strong>Estado:</strong> {{ perfilData.estado }}</div>
+        <div><strong>Género:</strong> {{ perfilData.genero || 'No especificado' }}</div>
+        <div><strong>Fecha de nacimiento:</strong> {{ perfilData?.fecha_nacimiento || 'No especificado' }}</div>
+        <div><strong>Idioma:</strong> {{ perfilData.idioma || 'No especificado' }}</div>
+        <div><strong>Estado:</strong> {{ perfilData.estado || 'No especificado' }}</div>
     </div>
     <div class="d-flex gap-3 mt-4">
         <a routerLink="/chat" class="btn btn-primary">Regresar</a>
+<<<<<<< HEAD
         <a routerLink="/editar-perfil" class="btn btn-regresar">Editar</a>    
+=======
+        @if (esMiPerfil()) {
+        <a routerLink="/editar-perfil" class="btn btn-outline-dark">Editar</a>
+        }
+        @if (esMiPerfil()) {
+>>>>>>> 06cd1cc (ver perfil usuario ajeno)
         <button class="btn btn-danger" (click)="cerrarSesion()">Cerrar sesión</button>
+        }
     </div>
 </div>

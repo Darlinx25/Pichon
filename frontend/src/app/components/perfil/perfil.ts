@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { UserService } from '../../services/user-service';
 @Component({
@@ -15,6 +15,7 @@ export class Perfil implements OnInit {
   constructor(
     private userService: UserService,
     private router: Router,
+    private route: ActivatedRoute,
     private cdr: ChangeDetectorRef
   ) {
     this.user = JSON.parse(localStorage.getItem('user') || '{}');
@@ -28,12 +29,16 @@ export class Perfil implements OnInit {
     img.src = 'assets/default-avatar.jpg';
   }
   ngOnInit() {
-    const userId = this.user?.id;
+    const userId = this.route.snapshot.paramMap.get('id');
     if (userId) {
-      this.userService.getPerfil(userId).subscribe(data => {
+      this.userService.getPerfil(Number(userId)).subscribe(data => {
         this.perfilData = data;
         this.cdr.detectChanges();
       });
     }
   }
+  
+  esMiPerfil(): boolean {
+  return Number(this.route.snapshot.paramMap.get('id')) === Number(this.user?.id);
+}
 }
