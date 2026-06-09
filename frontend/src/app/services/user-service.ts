@@ -25,4 +25,7 @@ export class UserService {
   return this.http.get<any>(`${environment.apiBaseUrl}/perfil.php?id=${id}`);
 }
 
+  actualizarPerfil(formData: FormData) {
+  return this.http.post<any>(`${environment.apiBaseUrl}/editar-perfil.php`, formData);
+}
 }
