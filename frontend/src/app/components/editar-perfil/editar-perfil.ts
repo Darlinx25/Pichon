@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { UserService } from '../../services/user-service';
@@ -11,10 +11,6 @@ import { NgIf } from '@angular/common';
   styleUrl: './editar-perfil.scss',
 })
 export class EditarPerfil implements OnInit {
-  formBuilder = inject(FormBuilder);
-  userService = inject(UserService);
-  router = inject(Router);
-  cdr = inject(ChangeDetectorRef);
   user: any;
   apiBaseUrl = environment.apiBaseUrl;
   perfilData: any = null;
@@ -22,17 +18,25 @@ export class EditarPerfil implements OnInit {
   successMessage = '';
   errorMessage = '';
   loading = false;
-  editForm = this.formBuilder.group({
-    username: ['', Validators.required],
-    email: ['', [Validators.required, Validators.email]],
-    alias: ['', Validators.required],
-    genero: [''],
-    fecha_nacimiento: [''],
-    idioma: [''],
-    estado: [''],
-  });
-  ngOnInit() {
+  editForm: any;
+  constructor(
+    private formBuilder: FormBuilder,
+    private userService: UserService,
+    private router: Router,
+    private cdr: ChangeDetectorRef
+  ) {
     this.user = JSON.parse(localStorage.getItem('user') || '{}');
+    this.editForm = this.formBuilder.group({
+      username: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      alias: ['', Validators.required],
+      genero: [''],
+      fecha_nacimiento: [''],
+      idioma: [''],
+      estado: [''],
+    });
+  }
+  ngOnInit() {
     const userId = this.user?.id;
     if (userId) {
       this.userService.getPerfil(userId).subscribe(data => {
@@ -84,7 +88,6 @@ export class EditarPerfil implements OnInit {
           user.alias = this.editForm.get('alias')?.value;
           localStorage.setItem('user', JSON.stringify(user));
           this.cdr.detectChanges();
-
         } else {
           this.errorMessage = res.error;
           this.successMessage = '';
