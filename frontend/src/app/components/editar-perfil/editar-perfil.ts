@@ -65,7 +65,6 @@ export class EditarPerfil implements OnInit {
     this.loading = true;
     const formData = new FormData();
     formData.append('id', this.user.id);
-    formData.append('username', this.editForm.get('username')?.value ?? '');
     formData.append('email', this.editForm.get('email')?.value ?? '');
     formData.append('alias', this.editForm.get('alias')?.value ?? '');
     formData.append('genero', this.editForm.get('genero')?.value ?? '');

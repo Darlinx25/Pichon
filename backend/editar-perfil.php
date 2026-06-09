@@ -10,7 +10,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 $conexion = require "./db.php";
 $id = (int)($_POST["id"] ?? 0);
-$username = $_POST["username"] ?? '';
 $email = $_POST["email"] ?? '';
 $alias = $_POST["alias"] ?? '';
 $genero = $_POST["genero"] ?? '';
@@ -41,9 +40,9 @@ if ($imgPath && $oldImg && $oldImg !== $imgPath) {
     }
 }
 if ($imgPath) {
-    $sql1 = "UPDATE usuario SET username= '$username', email='$email', alias='$alias', img='$imgPath' WHERE id=$id";
+    $sql1 = "UPDATE usuario SET email='$email', alias='$alias', img='$imgPath' WHERE id=$id";
 } else {
-    $sql1 = "UPDATE usuario SET username= '$username', email='$email', alias='$alias' WHERE id=$id";
+    $sql1 = "UPDATE usuario SET email='$email', alias='$alias' WHERE id=$id";
 }
 $sql2 = "UPDATE perfil SET genero='$genero', fecha_nacimiento=$fecha_nacimiento, idioma='$idioma', estado='$estado' WHERE id=$id";
 if (mysqli_query($conexion, $sql1) && mysqli_query($conexion, $sql2)) {
