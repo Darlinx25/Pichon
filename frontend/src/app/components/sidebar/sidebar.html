@@ -82,7 +82,7 @@
                 : 'assets/default-avatar.jpg'" (error)="onImageError($event)" alt="avatar"
             style="width:60px;height:60px;border-radius:50%;object-fit:cover;" />
         <span>{{ user.alias }}</span>
-        <a class="btn btn-primary" routerLink="/perfil">Ver perfil</a>
+        <a class="btn btn-primary" [routerLink]="['/perfil', user.id]">Ver perfil</a>
     </div>
 
 </div>

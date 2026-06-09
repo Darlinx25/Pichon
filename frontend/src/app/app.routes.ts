@@ -11,7 +11,7 @@ export const routes: Routes = [
     { path: '', component: Login},
     { path: 'chat', component: MessageWindow},
     { path: 'usuarios', component: Usuarios},
-    { path: 'perfil', component: Perfil},
+    { path: 'perfil/:id', component: Perfil },
     { path: 'editar-perfil', component: EditarPerfil}
     
 ];

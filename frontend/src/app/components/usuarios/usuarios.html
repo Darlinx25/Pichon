@@ -9,7 +9,7 @@
                     ? apiBaseUrl + '/img/' + user.img
                     : 'assets/default-avatar.jpg'" (error)="onImageError($event)" alt="avatar"
                 style="width:60px;height:60px;border-radius:50%;object-fit:cover;" />
-            {{ user.alias }}
+            <a [routerLink]="['/perfil', user.id]">{{ user.alias }}</a>
         </div>
         }
     </div>
