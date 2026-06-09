@@ -2,9 +2,8 @@
     <app-sidebar class="w-25" />
     <div class="d-flex flex-column flex-grow-1">
         @if (selectedUser) {
-        <div style="border:1px solid #000;background:#f0f0f0;height:8%;" class="d-flex align-items-center px-3 gap-2">
+        <div class="border bg-light d-flex align-items-center px-3 gap-2" style="height:100px;">
             @if (selectedUser.img) {
-                
             <img
             [src]="user.img
                 ? apiBaseUrl + '/img/' + selectedUser.img
@@ -15,8 +14,7 @@
             }
             <span class="fw-bold">{{ selectedUser.alias }}</span>
         </div> 
-        <div #msgContainer style="border:1px solid #000;background:rgb(236,236,236);height:82%;overflow-y:auto;"
-            class="d-flex flex-column p-2">
+        <div #msgContainer class="border bg-light d-flex flex-column p-2" style="height:82%;overflow-y:auto;">
             @for (msg of messages; track $index) {
             <div class="mb-1 p-2 rounded shadow-sm" [class.ms-auto]="msg.side === 'outgoing'"
                 [class.me-auto]="msg.side !== 'outgoing'" [class.bg-primary]="msg.side === 'outgoing'"
@@ -28,13 +26,11 @@
             }
         </div>
         } @else {
-        <div class="d-flex flex-column justify-content-center align-items-center flex-grow-1"
-            style="background:rgb(236,236,236);">
+        <div class="d-flex flex-column justify-content-center align-items-center flex-grow-1 bg-light">
             <p class="text-muted fs-5">Seleccioná un usuario para empezar a chatear</p>
         </div>
         }
-        <div style="border:1px solid #000;background:rgb(236,236,236);height:10%;"
-            class="d-flex justify-content-center align-items-center">
+        <div class="border bg-light d-flex justify-content-center align-items-center" style="height:10%;">
             <form id="chat-form" [formGroup]="chatForm" (ngSubmit)="enviarMensaje()">
                 <div class="input-group h-100">
                     <textarea formControlName="mensaje" (keydown.enter)="manejadorTeclaEnter($event)"

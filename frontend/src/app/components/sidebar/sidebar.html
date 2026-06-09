@@ -1,24 +1,15 @@
-<div class="d-flex flex-column vh-100 bg-light">
+<div class="d-flex flex-column vh-100 bg-light border-end">
 
-
-    <div class="position-relative p-3" style="border:1px solid #000;height:10%;z-index:1000;">
-
+    <div class="position-relative p-3 border" style="height:100px;z-index:1000;">
         <div class="d-flex gap-3 align-items-start">
-
             <form [formGroup]="searchForm">
                 <input id="busqueda" formControlName="busqueda" class="form-control" type="search"
                     placeholder="buscar usuario" aria-label="buscar usuario" />
             </form>
-
-            <a style="color: rgb(43, 43, 206);" routerLink="/usuarios">
-                Usuarios
-            </a>
-
+            <a class="link-primary" routerLink="/usuarios">Usuarios</a>
         </div>
 
-
         @if (usuariosEncontrados.length > 0) {
-
         <div class="position-absolute bg-white border rounded shadow" style="
                 top: calc(100% - 10px);
                 left: 8px;
@@ -26,118 +17,72 @@
                 max-height: 300px;
                 overflow-y: auto;
                 z-index: 99999;">
-
             @for (usuario of usuariosEncontrados; track usuario.id) {
-
             <div class="d-flex align-items-center gap-2 p-2 border-bottom" style="cursor:pointer;"
                 (click)="seleccionarUsuario(usuario)">
-
                 <img [src]="usuario.img
                         ? apiBaseUrl + '/img/' + usuario.img
                         : 'assets/default-avatar.jpg'" (error)="onImageError($event)" alt="avatar"
                     style="width:60px;height:60px;border-radius:50%;object-fit:cover;" />
-
                 <span>{{ usuario.alias }}</span>
-
             </div>
-
             }
-
         </div>
-
         }
-
     </div>
-
 
     <ul class="nav nav-tabs">
-
         <li class="nav-item">
-            <button class="nav-link active" id="chat-tab" data-bs-toggle="tab" data-bs-target="#chat"
-                type="button">
-
+            <button class="nav-link active" id="chat-tab" data-bs-toggle="tab" data-bs-target="#chat" type="button">
                 Chats
-
             </button>
         </li>
-
         <li class="nav-item">
-            <button class="nav-link" id="contactos-tab" data-bs-toggle="tab" data-bs-target="#contactos"
-                type="button">
-
+            <button class="nav-link" id="contactos-tab" data-bs-toggle="tab" data-bs-target="#contactos" type="button">
                 Contactos
-
             </button>
         </li>
-
     </ul>
 
-
-    <div class="tab-content flex-grow-1"
-        style="border-left:1px solid #000;border-right:1px solid #000;overflow:hidden;">
-
+    <div class="tab-content flex-grow-1 border-start border-end overflow-hidden">
 
         <div class="tab-pane fade show active h-100" id="chat" role="tabpanel" aria-labelledby="chat-tab">
-
             <div class="h-100 overflow-auto p-2">
-
                 @for (user of listaUsuarios; track user.id) {
-
                 <div class="border-bottom py-4 mb-2" (click)="seleccionarUsuario(user)" style="cursor:pointer;">
-
                     <img [src]="user.img
                             ? apiBaseUrl + '/img/' + user.img
                             : 'assets/default-avatar.jpg'" (error)="onImageError($event)" alt="avatar"
                         style="width:60px;height:60px;border-radius:50%;object-fit:cover;" />
-
                     {{ user.alias }}
-
                 </div>
-
                 }
-
             </div>
-
         </div>
 
-
         <div class="tab-pane fade h-100" id="contactos" role="tabpanel" aria-labelledby="contactos-tab">
-
             <div class="h-100 overflow-auto p-2">
-
                 @for (user of listaUsuarios; track user.id) {
-
                 <div class="border-bottom py-4 mb-2" (click)="seleccionarUsuario(user)" style="cursor:pointer;">
-
                     <img [src]="user.img
                             ? apiBaseUrl + '/img/' + user.img
                             : 'assets/default-avatar.jpg'" (error)="onImageError($event)" alt="avatar"
                         style="width:60px;height:60px;border-radius:50%;object-fit:cover;" />
-
                     {{ user.alias }}
-
                 </div>
-
                 }
-
             </div>
-
         </div>
 
     </div>
 
-
-    <div style="border:1px solid #000;height:10%;" class="d-flex justify-content-center align-items-center gap-2">
-
+    <div class="border d-flex justify-content-center align-items-center gap-2" style="height:10%;">
         <img [src]="user.img
                 ? apiBaseUrl + '/img/' + user.img
                 : 'assets/default-avatar.jpg'" (error)="onImageError($event)" alt="avatar"
             style="width:60px;height:60px;border-radius:50%;object-fit:cover;" />
-
         <span>{{ user.alias }}</span>
-
-        <a routerLink="/perfil">Ver perfil</a>
-
+        <a class="btn btn-primary" routerLink="/perfil">Ver perfil</a>
     </div>
 
 </div>

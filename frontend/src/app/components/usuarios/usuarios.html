@@ -1,10 +1,8 @@
 <div>
     <div>
-        <a style="color: rgb(43, 43, 206);" routerLink="/chat">Chat</a>
+        <a class="link-primary" routerLink="/chat">Chat</a>
     </div>
-    <div style="border: 1px solid #000000; height: 80%; overflow-y: auto;" class="d-flex  d-flex flex-column p-2 ">
-
-
+    <div class="border d-flex flex-column p-2" style="height:80%;overflow-y:auto;">
         @for (user of usuariosEncontrados; track $index) {
         <div class="border-bottom py-4 mb-2">
             <img [src]="user.img
@@ -14,6 +12,5 @@
             {{ user.alias }}
         </div>
         }
-
     </div>
 </div>

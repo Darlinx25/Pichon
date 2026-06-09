@@ -62,6 +62,10 @@ export class Sidebar implements AfterViewInit {
     tabEls.forEach(el => new bootstrap.Tab(el));
   }
 
+  cerrarSesion() {
+    localStorage.removeItem('user');
+    this.router.navigate(['/']);
+  }
   seleccionarUsuario(usuario: any) {
     this.chatService.selectUser(usuario);
     this.usuariosEncontrados = [];
