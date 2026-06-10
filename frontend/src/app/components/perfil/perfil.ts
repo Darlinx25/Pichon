@@ -29,16 +29,30 @@ export class Perfil implements OnInit {
     img.src = 'assets/default-avatar.jpg';
   }
   ngOnInit() {
-    const userId = this.route.snapshot.paramMap.get('id');
-    if (userId) {
-      this.userService.getPerfil(Number(userId)).subscribe(data => {
-        this.perfilData = data;
-        this.cdr.detectChanges();
-      });
-    }
+  const userId = this.route.snapshot.paramMap.get('id');
+  if (userId) {
+    this.userService.getPerfil(Number(userId), Number(this.user.id)).subscribe(data => {
+      this.perfilData = data;
+      this.cdr.detectChanges();
+    });
   }
+}
   
   esMiPerfil(): boolean {
   return Number(this.route.snapshot.paramMap.get('id')) === Number(this.user?.id);
+}
+
+agregarContacto() {
+  this.userService.agregarContacto(this.user.id, this.perfilData.id).subscribe(() => {
+    this.perfilData.esContacto = true;
+    this.cdr.detectChanges();
+  });
+}
+
+eliminarContacto() {
+  this.userService.eliminarContacto(this.user.id, this.perfilData.id).subscribe(() => {
+    this.perfilData.esContacto = false;
+    this.cdr.detectChanges();
+  });
 }
 }

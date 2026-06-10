@@ -62,7 +62,10 @@ INSERT INTO `chat` (`id_chat`, `id_usuario1`, `id_usuario2`) VALUES
 
 CREATE TABLE `contactos` (
   `id_usuario` int NOT NULL,
-  `id_contacto` int NOT NULL
+  `id_contacto` int NOT NULL,
+  PRIMARY KEY (`id_usuario`, `id_contacto`),
+  CONSTRAINT `fk_contactos_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_contactos_contacto` FOREIGN KEY (`id_contacto`) REFERENCES `usuario` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------

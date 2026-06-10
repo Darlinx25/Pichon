@@ -17,13 +17,21 @@
     </div>
     <div class="d-flex gap-3 mt-4">
         <a routerLink="/chat" class="btn btn-primary">Regresar</a>
-        
+
         @if (esMiPerfil()) {
         <a routerLink="/editar-perfil" class="btn btn-primary">Editar</a>
         }
         @if (esMiPerfil()) {
 
         <button class="btn btn-danger" (click)="cerrarSesion()">Cerrar sesión</button>
+        }
+
+        @if (!esMiPerfil()) {
+        @if (perfilData?.esContacto) {
+        <button class="btn btn-primary" (click)="eliminarContacto()">Eliminar contacto</button>
+        } @else {
+        <button class="btn btn-primary" (click)="agregarContacto()">Agregar contacto</button>
+        }
         }
     </div>
 </div>

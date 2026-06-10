@@ -21,11 +21,26 @@ export class UserService {
     );
   }
 
-  getPerfil(id: number) {
-  return this.http.get<any>(`${environment.apiBaseUrl}/perfil.php?id=${id}`);
+  getPerfil(id: number, usuarioActual?: number) {
+  const url = usuarioActual
+    ? `${environment.apiBaseUrl}/perfil.php?id=${id}&usuario_actual=${usuarioActual}`
+    : `${environment.apiBaseUrl}/perfil.php?id=${id}`;
+  return this.http.get<any>(url);
 }
 
   actualizarPerfil(formData: FormData) {
   return this.http.post<any>(`${environment.apiBaseUrl}/editar-perfil.php`, formData);
+}
+
+agregarContacto(usuarioId: number, contactoId: number) {
+  return this.http.post(`${environment.apiBaseUrl}/agregarContacto.php`, { id_usuario: usuarioId, id_contacto: contactoId });
+}
+
+eliminarContacto(usuarioId: number, contactoId: number) {
+  return this.http.post(`${environment.apiBaseUrl}/eliminarContacto.php`, { id_usuario: usuarioId, id_contacto: contactoId });
+}
+
+listarContactos(usuarioId: number) {
+  return this.http.get<any[]>(`${environment.apiBaseUrl}/listarContactos.php?id_usuario=${usuarioId}`);
 }
 }

@@ -22,6 +22,7 @@ export class Sidebar implements AfterViewInit {
 
   usuariosEncontrados: any[] = [];
   listaUsuarios: any[] = [];
+  contactos: any[] = [];
 
   searchForm = this.formBuilder.group({
     busqueda: ['']
@@ -55,6 +56,10 @@ export class Sidebar implements AfterViewInit {
       this.listaUsuarios = usuarios;
       this.cdr.detectChanges();
     });
+    this.userService.listarContactos(this.user.id).subscribe((contactos) => {
+    this.contactos = contactos;
+    this.cdr.detectChanges();
+});
   }
 
   ngAfterViewInit() {
