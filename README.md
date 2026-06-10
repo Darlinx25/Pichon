@@ -1,3 +1,7 @@
+
+<img width="1912" height="914" alt="Ejemplo" src="https://github.com/user-attachments/assets/b705580f-aa1f-43fa-ba81-1b910d0e0a62" />
+
+
 ## Levantar servidor
 
 Desde la raiz del proyecto para levantar, mySQL, phpMyAdmin y el servidor WebSocket
