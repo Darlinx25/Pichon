@@ -9,3 +9,20 @@ body {
     linear-gradient(180deg, #0f151c 0%, #0b1016 54%, #0a0f14 100%);
   background-attachment: fixed;
 }
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(200, 210, 220, 0.12);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(123, 191, 153, 0.25);
+}
