@@ -2,20 +2,20 @@
 $font-family-sans-serif: 'IBM Plex Mono', monospace;
 $font-family-monospace: 'IBM Plex Mono', monospace;
 
-// Paleta oscura — inspirada ntsc.rs
+// Paleta
 $body-bg: #0d1117;
 $body-color: #e6e6e6;
 
-$primary: #54ce79;          // verde apagado
+$primary: #8a6a4a;        
 $secondary: #6c756f;
 $success: #7ec97e;
 $danger: #f16e65;
 $warning: #efbf71;
 $info: #71b4d6;
-$light: #161b22;            // fondo de inputs/paneles
+$light: #161b22;          
 $dark: #010409;
 
-// Bordes sutiles
+
 $border-color: rgba(200, 210, 220, 0.12);
 $border-radius: 8px;
 
@@ -23,22 +23,26 @@ $border-radius: 8px;
 $input-bg: #161b22;
 $input-color: #e6e6e6;
 $input-border-color: rgba(200, 210, 220, 0.12);
-$input-focus-border-color: #7bbf99;
-$input-focus-box-shadow: 0 0 0 2px rgba(123, 191, 153, 0.15);
+$input-focus-border-color: #8a6a4a;
+$input-focus-box-shadow: 0 0 0 2px rgba(138, 106, 74, 0.15);
 $input-placeholder-color: #6c756f;
 
 // Botones
 $btn-border-radius: 6px;
 $btn-primary-bg: transparent;
-$btn-primary-border: #7bbf99;
-$btn-primary-color: #7bbf99;
+$btn-primary-border: rgba(110, 80, 55, 0.35);
+$btn-primary-color: rgba(190, 165, 135, 0.7);
+
+
+
 
 // Nav tabs
-$nav-tabs-border-color: rgba(200, 210, 220, 0.10);
-$nav-tabs-link-active-bg: rgba(123, 191, 153, 0.08);
-$nav-tabs-link-active-color: #7bbf99;
-$nav-tabs-link-active-border-color: #7bbf99;
+$nav-pills-link-active-bg: rgba(110, 80, 55, 0.25);
+$nav-pills-link-active-color: rgba(215, 190, 160, 0.95);
+$nav-link-color: rgba(190, 165, 135, 0.5);
+$nav-link-hover-color: rgba(215, 190, 160, 0.8);
+
 
 // Links
-$link-color: #7bbf99;
-$link-hover-color: #a4daa4;
+$link-color: rgba(190, 165, 135, 0.7);
+$link-hover-color: rgba(215, 190, 160, 0.9);

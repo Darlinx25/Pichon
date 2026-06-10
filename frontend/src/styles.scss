@@ -4,11 +4,12 @@
 
 body {
   background-image:
-    radial-gradient(1400px 1000px at 12% 8%, rgba(123, 191, 153, 0.06), transparent 60%),
-    radial-gradient(1200px 900px at 86% 84%, rgba(200, 160, 106, 0.06), transparent 60%),
+    radial-gradient(1400px 1000px at 12% 8%, rgba(110, 80, 55, 0.06), transparent 60%),
+    radial-gradient(1200px 900px at 86% 84%, rgba(130, 100, 70, 0.05), transparent 60%),
     linear-gradient(180deg, #0f151c 0%, #0b1016 54%, #0a0f14 100%);
   background-attachment: fixed;
 }
+
 
 ::-webkit-scrollbar {
   width: 6px;
@@ -25,4 +26,35 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(123, 191, 153, 0.25);
+}
+
+.btn-primary {
+  background: rgba(110, 80, 55, 0.2);
+  border-color: rgba(110, 80, 55, 0.35);
+  color: rgba(190, 165, 135, 0.7);
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.5px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(110, 80, 55, 0.35);
+    color: rgba(215, 190, 160, 0.9);
+    border-color: rgba(110, 80, 55, 0.5);
+  }
+}
+
+.btn-danger {
+  background: rgba(110, 80, 55, 0.2);
+  border-color: rgba(110, 80, 55, 0.35);
+  color: rgba(190, 165, 135, 0.7);
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.5px;
+
+  &:hover {
+    background: rgba(110, 80, 55, 0.35);
+    color: rgba(215, 190, 160, 0.9);
+    border-color: rgba(110, 80, 55, 0.5);
+  }
 }

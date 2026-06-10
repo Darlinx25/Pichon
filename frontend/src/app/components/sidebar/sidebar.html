@@ -10,13 +10,16 @@
         </div>
 
         @if (usuariosEncontrados.length > 0) {
-        <div class="position-absolute bg-white shadow" style="
-                top: calc(100% - 10px);
-                left: 8px;
-                right: 8px;
-                max-height: 300px;
-                overflow-y: auto;
-                z-index: 99999;">
+        <div class="position-absolute shadow" style="
+                    top: calc(100% - 10px);
+                    left: 8px;
+                    right: 8px;
+                    max-height: 300px;
+                    overflow-y: auto;
+                    z-index: 99999;
+                    border: 1px solid rgba(200, 210, 220, 0.12);
+                    border-radius: 8px;
+                    background: #1a1d21;">
             @for (usuario of usuariosEncontrados; track usuario.id) {
             <div class="d-flex align-items-center gap-2 p-2 border-bottom" style="cursor:pointer;"
                 (click)="seleccionarUsuario(usuario)">
@@ -76,7 +79,8 @@
 
     </div>
 
-    <div class="border rounded-3 d-flex justify-content-start p-2 align-items-center gap-2 mx-1 mb-1" style="height:10%;">
+    <div class="border rounded-3 d-flex justify-content-start p-2 align-items-center gap-2 mx-1 mb-1"
+        style="height:10%;">
         <img [src]="user.img
                 ? apiBaseUrl + '/img/' + user.img
                 : 'assets/default-avatar.jpg'" (error)="onImageError($event)" alt="avatar"

@@ -1,16 +1,18 @@
-<div>
-    <div>
-        <a class="btn btn-primary" routerLink="/chat">Chat</a>
-    </div>
-    <div class="border d-flex flex-column p-2" style="height:80%;overflow-y:auto;">
-        @for (user of usuariosEncontrados; track $index) {
-        <div class="border-bottom py-4 mb-2">
-            <img [src]="user.img
-                    ? apiBaseUrl + '/img/' + user.img
-                    : 'assets/default-avatar.jpg'" (error)="onImageError($event)" alt="avatar"
-                style="width:60px;height:60px;border-radius:50%;object-fit:cover;" />
-            <a [routerLink]="['/perfil', user.id]">{{ user.alias }}</a>
-        </div>
-        }
-    </div>
+<div class="d-flex flex-column p-3" style="min-height:100vh;">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="m-0">Usuarios</h4>
+    <a class="btn btn-primary btn-sm" routerLink="/chat">Regresar</a>
+  </div>
+  <div class="flex-grow-1 overflow-auto">
+    @for (user of usuariosEncontrados; track $index) {
+      <div class="user-item mb-2 ps-3 py-4">
+        <img [src]="user.img
+              ? apiBaseUrl + '/img/' + user.img
+              : 'assets/default-avatar.jpg'"
+          (error)="onImageError($event)" alt="avatar"
+          class="user-avatar" />
+        <a class="link-primary" [routerLink]="['/perfil', user.id]">{{ user.alias }}</a>
+      </div>
+    }
+  </div>
 </div>
