@@ -2,10 +2,10 @@
 -- version 5.2.3
 -- https://www.phpmyadmin.net/
 --
--- Host: mysql:3306
--- Generation Time: Jun 08, 2026 at 08:54 PM
--- Server version: 8.0.46
--- PHP Version: 8.3.31
+-- Servidor: mysql:3306
+-- Tiempo de generación: 10-06-2026 a las 22:15:49
+-- Versión del servidor: 8.0.46
+-- Versión de PHP: 8.3.31
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `pichon_db`
+-- Base de datos: `pichon_db`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `chat`
+-- Estructura de tabla para la tabla `chat`
 --
 
 CREATE TABLE `chat` (
@@ -34,7 +34,7 @@ CREATE TABLE `chat` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `chat`
+-- Volcado de datos para la tabla `chat`
 --
 
 INSERT INTO `chat` (`id_chat`, `id_usuario1`, `id_usuario2`) VALUES
@@ -52,26 +52,46 @@ INSERT INTO `chat` (`id_chat`, `id_usuario1`, `id_usuario2`) VALUES
 (12, 9, 8),
 (13, 9, 5),
 (14, 9, 6),
-(15, 9, 9);
+(15, 9, 9),
+(16, 11, 4),
+(17, 11, 5),
+(18, 11, 6),
+(19, 11, 9),
+(20, 11, 10),
+(21, 11, 8),
+(22, 11, 7),
+(23, 11, 12),
+(24, 11, 11),
+(25, 7, 10),
+(26, 7, 12),
+(27, 13, 4),
+(28, 13, 5);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `contactos`
+-- Estructura de tabla para la tabla `contactos`
 --
 
 CREATE TABLE `contactos` (
   `id_usuario` int NOT NULL,
-  `id_contacto` int NOT NULL,
-  PRIMARY KEY (`id_usuario`, `id_contacto`),
-  CONSTRAINT `fk_contactos_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `fk_contactos_contacto` FOREIGN KEY (`id_contacto`) REFERENCES `usuario` (`id`) ON DELETE CASCADE
+  `id_contacto` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Volcado de datos para la tabla `contactos`
+--
+
+INSERT INTO `contactos` (`id_usuario`, `id_contacto`) VALUES
+(11, 4),
+(11, 5),
+(13, 5),
+(11, 7);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `mensaje`
+-- Estructura de tabla para la tabla `mensaje`
 --
 
 CREATE TABLE `mensaje` (
@@ -83,7 +103,7 @@ CREATE TABLE `mensaje` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `mensaje`
+-- Volcado de datos para la tabla `mensaje`
 --
 
 INSERT INTO `mensaje` (`id_mensaje`, `id_chat`, `id_usuario`, `contenido`, `fecha`) VALUES
@@ -96,12 +116,21 @@ INSERT INTO `mensaje` (`id_mensaje`, `id_chat`, `id_usuario`, `contenido`, `fech
 (7, 5, 7, 'dime si eres felis', '2026-06-07 14:19:23'),
 (8, 4, 8, 'asd', '2026-06-07 15:26:58'),
 (9, 4, 8, 'asdasd', '2026-06-07 15:27:02'),
-(10, 4, 8, 'asdasd', '2026-06-07 15:27:04');
+(10, 4, 8, 'asdasd', '2026-06-07 15:27:04'),
+(11, 16, 11, 'asdawfaw', '2026-06-08 23:31:14'),
+(12, 16, 11, 'holii', '2026-06-09 21:58:09'),
+(13, 16, 11, 'holaaa', '2026-06-09 21:58:12'),
+(14, 16, 11, 'añoooo', '2026-06-09 21:58:14'),
+(15, 23, 11, 'halooo', '2026-06-09 21:58:44'),
+(16, 23, 12, 'aloooo', '2026-06-09 21:59:02'),
+(17, 22, 11, 'aloooo', '2026-06-10 20:17:26'),
+(18, 22, 11, 'hihiiiii', '2026-06-10 20:17:29'),
+(19, 22, 7, 'hiiii', '2026-06-10 20:18:24');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `perfil`
+-- Estructura de tabla para la tabla `perfil`
 --
 
 CREATE TABLE `perfil` (
@@ -113,16 +142,19 @@ CREATE TABLE `perfil` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `perfil`
+-- Volcado de datos para la tabla `perfil`
 --
 
 INSERT INTO `perfil` (`id`, `genero`, `fecha_nacimiento`, `idioma`, `estado`) VALUES
-(10, NULL, NULL, NULL, NULL);
+(10, NULL, NULL, NULL, NULL),
+(11, '', NULL, '', 'lol'),
+(12, NULL, NULL, NULL, NULL),
+(13, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `usuario`
+-- Estructura de tabla para la tabla `usuario`
 --
 
 CREATE TABLE `usuario` (
@@ -135,7 +167,7 @@ CREATE TABLE `usuario` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `usuario`
+-- Volcado de datos para la tabla `usuario`
 --
 
 INSERT INTO `usuario` (`id`, `username`, `email`, `password`, `alias`, `img`) VALUES
@@ -145,65 +177,82 @@ INSERT INTO `usuario` (`id`, `username`, `email`, `password`, `alias`, `img`) VA
 (7, 'kevin', 'as@kevin.com', '$2y$10$g2fLdefRERbmCZQdGv.qe.T76206OefVcvrYi01BVx7t4Ffoe3yOG', 'kevin chanfle', '1780840043_eae2a7ee.jpg'),
 (8, 'duko', 'sanchez@corrupto.com', '$2y$10$VawAK36iLjaq3i4pKGNtLO.udBGupXujOaH1mOomlI190nclMGXAq', 'Duko', '1780840101_0eb5cee9.jpg'),
 (9, 'pepe', 'pepelol@hotmail.com', '$2y$10$Rab220B8mi9s3IG4U1vtY.YhzXTno9GAuRBYijxDF/KLKmBCc9pM2', 'pepelol', '1780864631_00ab0de9.jpg'),
-(10, 'lolito', 'lolito@lolo.com', '$2y$10$oybGvCAfwUHgAgneH8/zeOWE6H.LY0Nz5AWl9idOz4J/S.oYUa/NK', 'Lolito Garza', '1780951962_51202b01.jpg');
+(10, 'lolito', 'lolito@lolo.com', '$2y$10$oybGvCAfwUHgAgneH8/zeOWE6H.LY0Nz5AWl9idOz4J/S.oYUa/NK', 'Lolito Garza', '1780951962_51202b01.jpg'),
+(11, 'menalex', 'alexismenchaca2005@gmail.com', '$2y$10$HXyACwTbcr0i0u6dZD8VEekvpuDnhY1QKdd0n7lDOpMcs3FWvg0ta', 'menalex', '1781042437_8a4fe1ec.jpeg'),
+(12, 'menalex2', 'alexismenchaca2004@gmail.com', '$2y$10$PuSj/cFtpENXdJrPb1bl1.MykdIOjvcADYwiLIpfQBtvHs0DV4Koy', 'demostracion', '1781040919_02559a20.jpeg'),
+(13, 'menalex5', 'alex@gmail.com', '$2y$10$6qSBfp7BjLqsHlkahCrsI.wWr9LPksZ4iZLGdRgjuEHJG8oFTFUNm', 'menalex3', '1781122744_cbb989f3.jpeg');
 
 --
--- Indexes for dumped tables
+-- Índices para tablas volcadas
 --
 
 --
--- Indexes for table `chat`
+-- Indices de la tabla `chat`
 --
 ALTER TABLE `chat`
   ADD PRIMARY KEY (`id_chat`);
 
 --
--- Indexes for table `mensaje`
+-- Indices de la tabla `contactos`
+--
+ALTER TABLE `contactos`
+  ADD PRIMARY KEY (`id_usuario`,`id_contacto`),
+  ADD KEY `fk_contactos_contacto` (`id_contacto`);
+
+--
+-- Indices de la tabla `mensaje`
 --
 ALTER TABLE `mensaje`
   ADD PRIMARY KEY (`id_mensaje`);
 
 --
--- Indexes for table `perfil`
+-- Indices de la tabla `perfil`
 --
 ALTER TABLE `perfil`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `usuario`
+-- Indices de la tabla `usuario`
 --
 ALTER TABLE `usuario`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `username` (`username`,`email`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT de las tablas volcadas
 --
 
 --
--- AUTO_INCREMENT for table `chat`
+-- AUTO_INCREMENT de la tabla `chat`
 --
 ALTER TABLE `chat`
-  MODIFY `id_chat` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id_chat` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
--- AUTO_INCREMENT for table `mensaje`
+-- AUTO_INCREMENT de la tabla `mensaje`
 --
 ALTER TABLE `mensaje`
-  MODIFY `id_mensaje` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id_mensaje` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
--- AUTO_INCREMENT for table `usuario`
+-- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
--- Constraints for dumped tables
+-- Restricciones para tablas volcadas
 --
 
 --
--- Constraints for table `perfil`
+-- Filtros para la tabla `contactos`
+--
+ALTER TABLE `contactos`
+  ADD CONSTRAINT `fk_contactos_contacto` FOREIGN KEY (`id_contacto`) REFERENCES `usuario` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_contactos_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`) ON DELETE CASCADE;
+
+--
+-- Filtros para la tabla `perfil`
 --
 ALTER TABLE `perfil`
   ADD CONSTRAINT `id_perfil` FOREIGN KEY (`id`) REFERENCES `usuario` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
