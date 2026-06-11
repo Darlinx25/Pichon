@@ -27,7 +27,7 @@
         <div class=" d-flex justify-content-center align-items-center" style="height:10%;">
             <form id="chat-form" [formGroup]="chatForm" (ngSubmit)="enviarMensaje()">
                 <div class="input-group h-100">
-                    <textarea formControlName="mensaje" (keydown.enter)="manejadorTeclaEnter($event)"
+                    <textarea #mensajeInput formControlName="mensaje" (keydown.enter)="manejadorTeclaEnter($event)"
                         class="form-control" placeholder="Escribe algo..." rows="1" style="resize:none;"></textarea>
                     <button class="btn btn-primary" type="submit"
                         [disabled]="chatForm.invalid || !selectedUser">Enviar</button>

@@ -18,6 +18,7 @@ import { environment } from '../../../environments/environment';
 })
 
 export class MessageWindow implements OnInit, OnDestroy {
+  @ViewChild('mensajeInput') mensajeInput!: ElementRef<HTMLTextAreaElement>;
   messages: any[] = [];
   selectedUser: any = null;
   chatId: number | null = null;
@@ -45,6 +46,7 @@ export class MessageWindow implements OnInit, OnDestroy {
     this.userSub = this.chatService.selectedUser$.subscribe(user => {
       this.selectedUser = user;
       this.cargarChat(user.id);
+      this.mensajeInput?.nativeElement.focus();
     });
     this.messageSub = this.webSocketService.getMessages().subscribe(msg => {
       if (msg.type !== 'message' || msg.chatId !== this.chatId || msg.fromId === this.user.id) return;
