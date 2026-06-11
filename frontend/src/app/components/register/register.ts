@@ -1,9 +1,8 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { NgIf } from '@angular/common';
 import { RouterLink, Router } from '@angular/router';
-
 
 @Component({
   selector: 'app-register',
@@ -12,40 +11,27 @@ import { RouterLink, Router } from '@angular/router';
   styleUrl: './register.scss',
 })
 export class Register implements OnInit {
-  formBuilder = inject(FormBuilder);
-  authService = inject(AuthService);
-  router = inject(Router);
-
   errorMessage = '';
   successMessage = '';
   selectedFile: File | null = null;
+  imagePreview: string | null = null;
+  isDragging = false;
 
-  registerForm = this.formBuilder.group({
-    username: ['', [Validators.required, Validators.minLength(3)]],
-    email: ['', [Validators.required, Validators.email]],
-    alias: ['', [Validators.required]],
-    password: ['', [Validators.required, Validators.minLength(12)]],
-    confirmPassword: ['', [Validators.required, Validators.minLength(12)]],
-  });
+  registerForm: any;
 
-  get username() {
-    return this.registerForm.get('username');
-  }
-
-  get email() {
-    return this.registerForm.get('email');
-  }
-
-  get alias() {
-    return this.registerForm.get('alias');
-  }
-
-  get password() {
-    return this.registerForm.get('password');
-  }
-
-  get confirmPassword() {
-    return this.registerForm.get('confirmPassword');
+  constructor(
+    private formBuilder: FormBuilder,
+    private authService: AuthService,
+    private router: Router,
+    private cdr: ChangeDetectorRef
+  ) {
+    this.registerForm = this.formBuilder.group({
+      username: ['', [Validators.required, Validators.minLength(3)]],
+      email: ['', [Validators.required, Validators.email]],
+      alias: ['', [Validators.required]],
+      password: ['', [Validators.required, Validators.minLength(12)]],
+      confirmPassword: ['', [Validators.required, Validators.minLength(12)]],
+    });
   }
 
   ngOnInit() {
@@ -56,38 +42,81 @@ export class Register implements OnInit {
 
   onSubmit() {
     if (this.registerForm.invalid) return;
+
     const formData = new FormData();
+
     formData.append('username', this.registerForm.get('username')?.value ?? '');
     formData.append('email', this.registerForm.get('email')?.value ?? '');
     formData.append('alias', this.registerForm.get('alias')?.value ?? '');
     formData.append('password', this.registerForm.get('password')?.value ?? '');
     formData.append('confirmPassword', this.registerForm.get('confirmPassword')?.value ?? '');
+
+    
+
     if (this.selectedFile) {
-      formData.append('imagen', this.selectedFile, this.selectedFile.name);
+      formData.append('imagen',this.selectedFile,this.selectedFile.name);
     }
+
     this.authService.register(formData).subscribe({
       next: (res: any) => {
         if (res.success) {
           this.successMessage = res.message;
           this.errorMessage = '';
+
           this.registerForm.reset();
           this.selectedFile = null;
+          this.imagePreview = null;
+
+          this.cdr.detectChanges();
         } else {
           this.errorMessage = res.error;
           this.successMessage = '';
+
+          this.cdr.detectChanges();
         }
       },
       error: (err) => {
-        this.errorMessage = err.error?.error || 'Error de conexión con el servidor';
+        this.errorMessage =
+          err.error?.error || 'Error de conexión con el servidor';
+
         this.successMessage = '';
+
+        this.cdr.detectChanges();
       },
     });
   }
 
-  onFileSelected(event: Event) {
+    private processFile(file: File) {
+    this.selectedFile = file;
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imagePreview = reader.result as string;
+      this.cdr.detectChanges();
+    };
+    reader.readAsDataURL(file);
+    this.cdr.detectChanges();
+  }
+
+    onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      this.selectedFile = input.files[0];
-    }
+    if (input.files?.[0]) this.processFile(input.files[0]);
+  }
+
+  onDragOver(event: DragEvent) {
+    event.preventDefault();
+    this.isDragging = true;
+  }
+
+  onDragLeave(event: DragEvent) {
+    event.preventDefault();
+    this.isDragging = false;
+    
+  }
+
+  onDrop(event: DragEvent) {
+    event.preventDefault();
+    this.isDragging = false;
+    if (event.dataTransfer?.files[0]) this.processFile(event.dataTransfer.files[0]);
+    this.cdr.detectChanges();
   }
 }

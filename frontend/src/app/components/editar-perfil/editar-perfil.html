@@ -1,22 +1,42 @@
 <div id="formulario" class="p-3 d-flex flex-column justify-content-center align-items-center">
     <h1 class="p-3">EDITAR PERFIL</h1>
-    <div *ngIf="successMessage" class="alert alert-success w-50 text-center">
-        {{ successMessage }}
-    </div>
-    <div *ngIf="errorMessage" class="alert alert-danger w-50 text-center">
-        {{ errorMessage }}
-    </div>
-    <div class="mb-4 text-center">
-        <img
-            [src]="perfilData?.img
+    <p class="text-success" *ngIf="successMessage">{{ successMessage }}</p>
+    <p class="text-danger" *ngIf="errorMessage">{{ errorMessage }}</p>
+    <div class="upload-zone border border-2 border-primary border-dashed rounded-4 p-4 text-center bg-light shadow-sm mx-auto mb-4"
+        style="max-width: 500px;" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)"
+        (drop)="onDrop($event)">
+
+        <div class="upload-overlay" *ngIf="isDragging">
+            <div class="text-center">
+                <i class="bi bi-cloud-arrow-up-fill fs-1 d-block mb-2"></i>
+                <div>Soltar para subir imagen</div>
+            </div>
+        </div>
+
+        <img [src]="imagePreview
+            ? imagePreview
+            : (perfilData?.img
                 ? apiBaseUrl + '/img/' + perfilData.img
-                : 'assets/default-avatar.jpg'"
-            (error)="onImageError($event)"
-            alt="avatar"
-            style="border-radius:10%; width:220px; height:220px; object-fit:cover;"
-        />
-        <input type="file" class="form-control mt-2" (change)="onFileSelected($event)" accept="image/*" />
+                : 'assets/default-avatar.jpg')" (error)="onImageError($event)" alt="avatar"
+            class="avatar-preview rounded-4 shadow mb-3">
+
+        <i class="bi bi-cloud-arrow-up fs-1 text-primary"></i>
+
+        <h5 class="fw-bold mt-2">
+            Imagen de perfil
+        </h5>
+
+        <p class="text-muted">
+            Arrastra una imagen aquí o selecciona un archivo
+        </p>
+
+        <label class="btn btn-outline-primary">
+            Elegir imagen
+            <input hidden type="file" accept="image/*" (change)="onFileSelected($event)">
+        </label>
+
     </div>
+
     <form (ngSubmit)="onSubmit()" [formGroup]="editForm">
         <div class="d-flex gap-3 mb-3">
             <label class="form-label w-25" for="email">Email</label>
@@ -63,8 +83,8 @@
             </div>
         </div>
         <div class="d-flex gap-3 mt-4 justify-content-center">
-            <button type="submit" class="btn btn-primary" [disabled]="loading">
-                {{ loading ? 'Guardando...' : 'Guardar cambios' }}
+            <button type="submit" class="btn btn-primary">
+                Guardar cambios
             </button>
             <a [routerLink]="['/perfil', user.id]" class="btn btn-primary">Regresar</a>
         </div>

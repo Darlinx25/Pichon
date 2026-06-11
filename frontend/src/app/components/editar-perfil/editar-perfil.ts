@@ -15,9 +15,10 @@ export class EditarPerfil implements OnInit {
   apiBaseUrl = environment.apiBaseUrl;
   perfilData: any = null;
   selectedFile: File | null = null;
+  imagePreview: string | null = null;
+  isDragging = false;
   successMessage = '';
   errorMessage = '';
-  loading = false;
   editForm: any;
   constructor(
     private formBuilder: FormBuilder,
@@ -54,19 +55,46 @@ export class EditarPerfil implements OnInit {
       });
     }
   }
+
+    private processFile(file: File) {
+    this.selectedFile = file;
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imagePreview = reader.result as string;
+      this.cdr.detectChanges();
+    };
+    reader.readAsDataURL(file);
+    this.cdr.detectChanges();
+  }
+
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      this.selectedFile = input.files[0];
-    }
+    if (input.files?.[0]) this.processFile(input.files[0]);
   }
+
+onDragOver(event: DragEvent) {
+  event.preventDefault();
+  this.isDragging = true;
+}
+
+onDragLeave(event: DragEvent) {
+  event.preventDefault();
+  this.isDragging = false;
+}
+
+onDrop(event: DragEvent) {
+    event.preventDefault();
+    this.isDragging = false;
+    if (event.dataTransfer?.files[0]) this.processFile(event.dataTransfer.files[0]);
+    this.cdr.detectChanges();
+  }
+  
   onImageError(event: Event): void {
     const img = event.target as HTMLImageElement;
     img.src = 'assets/default-avatar.jpg';
   }
   onSubmit() {
-    if (this.editForm.invalid || this.loading) return;
-    this.loading = true;
+    if (this.editForm.invalid) return;
     const formData = new FormData();
     formData.append('id', this.user.id);
     formData.append('email', this.editForm.get('email')?.value ?? '');
@@ -80,7 +108,6 @@ export class EditarPerfil implements OnInit {
     }
     this.userService.actualizarPerfil(formData).subscribe({
       next: (res: any) => {
-        this.loading = false;
         if (res.success) {
           this.successMessage = res.message;
           this.errorMessage = '';
@@ -95,7 +122,6 @@ export class EditarPerfil implements OnInit {
         }
       },
       error: (err) => {
-        this.loading = false;
         this.errorMessage = err.error?.error || 'Error de conexión con el servidor';
         this.successMessage = '';
         this.cdr.detectChanges();
