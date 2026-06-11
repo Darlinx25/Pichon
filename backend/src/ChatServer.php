@@ -41,9 +41,15 @@ class ChatServer implements MessageComponentInterface
         mysqli_query($db, "INSERT INTO mensaje (id_chat, id_usuario, contenido, fecha) 
             VALUES ($chatId, $fromId, '$texto', NOW())");
 
+        $idMensaje = mysqli_insert_id($db);
+        $result = mysqli_query($db, "SELECT * FROM mensaje WHERE id_mensaje = $idMensaje");
+        $mensaje = mysqli_fetch_assoc($result);
+
         if (isset($this->userConnections[$toId])) {
-            foreach ($this->userConnections[$toId] as $c) $c->send($msg);
+            foreach ($this->userConnections[$toId] as $c) $c->send(json_encode($mensaje));
         }
+
+        $from->send(json_encode($mensaje));
     }
 
     public function onClose(ConnectionInterface $conn): void

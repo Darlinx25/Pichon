@@ -8,11 +8,12 @@ import { AudioService } from '../../services/audio-service';
 import { HttpClient } from '@angular/common/http';
 import { ChatService } from '../../services/chat-servise';
 import { environment } from '../../../environments/environment';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
   selector: 'app-message-window',
-  imports: [ReactiveFormsModule, RouterLink, Sidebar],
+  imports: [ReactiveFormsModule, RouterLink, CommonModule, Sidebar],
   templateUrl: './message-window.html',
   styleUrl: './message-window.scss',
 })
@@ -31,8 +32,8 @@ export class MessageWindow implements OnInit, OnDestroy {
     private chatService: ChatService,
     private http: HttpClient,
     private audioService: AudioService) { }
-    private userSub!: Subscription;
-    private messageSub!: Subscription;
+  private userSub!: Subscription;
+  private messageSub!: Subscription;
 
   formBuilder = inject(FormBuilder);
   router = inject(Router);
@@ -47,12 +48,24 @@ export class MessageWindow implements OnInit, OnDestroy {
       this.selectedUser = user;
       this.cargarChat(user.id);
       this.mensajeInput?.nativeElement.focus();
+      this.cdr.detectChanges();
     });
     this.messageSub = this.webSocketService.getMessages().subscribe(msg => {
-      if (msg.type !== 'message' || msg.chatId !== this.chatId || msg.fromId === this.user.id) return;
-      this.messages.push({ ...msg, side: 'incoming' });
+      if (Number(msg.id_chat) !== this.chatId) {
+        return;
+      }
+      this.messages.push({
+        data: msg.contenido,
+        fecha: msg.fecha,
+        fromId: msg.id_usuario,
+        side: msg.id_usuario === this.user.id ? 'outgoing' : 'incoming'
+      });
+
       this.cdr.detectChanges();
-      this.audioService.playNotificacion();
+
+      if (msg.id_usuario !== this.user.id) {
+        this.audioService.playNotificacion();
+      }
     });
   }
 
@@ -70,6 +83,7 @@ export class MessageWindow implements OnInit, OnDestroy {
 
         return {
           data: mensaje.contenido,
+          fecha: mensaje.fecha,
           fromId: mensaje.id_usuario,
           side: esMio ? 'outgoing' : 'incoming'
         };
@@ -90,7 +104,6 @@ export class MessageWindow implements OnInit, OnDestroy {
       data: this.chatForm.value.mensaje
     };
     this.webSocketService.sendMessage(msg);
-    this.messages.push({ ...msg, side: 'outgoing' });
     this.chatForm.reset();
   }
 
@@ -116,9 +129,9 @@ export class MessageWindow implements OnInit, OnDestroy {
     const element = this.msgContainer.nativeElement;
     element.scrollTop = element.scrollHeight;
   }
-  
+
   onImageError(event: Event): void {
-  const img = event.target as HTMLImageElement;
-  img.src = 'assets/default-avatar.jpg';
-}
+    const img = event.target as HTMLImageElement;
+    img.src = 'assets/default-avatar.jpg';
+  }
 }

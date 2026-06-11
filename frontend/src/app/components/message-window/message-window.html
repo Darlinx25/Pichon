@@ -10,11 +10,13 @@
         </div>
         <div #msgContainer class="msgContainer d-flex flex-column p-2" style="height:82%;overflow-y:auto;">
             @for (msg of messages; track $index) {
+                
             <div class="mb-1 p-2 rounded shadow-sm text-break" [class.ms-auto]="msg.side === 'outgoing'"
                 [class.me-auto]="msg.side !== 'outgoing'" [class.message-outgoing]="msg.side === 'outgoing'"
                 [class.bg-light]="msg.side !== 'outgoing'"
                 style="max-width:70%; white-space:pre-wrap; overflow-wrap:break-word; word-break:break-word;">
                 {{ msg.data }}
+                <div class="msg-time">{{ (msg.fecha + 'Z') | date:'HH:mm' }}</div>
             </div>
             {{ scrollearAbajo() }}
             }
