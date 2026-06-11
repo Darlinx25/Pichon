@@ -1,18 +1,25 @@
 <div id="formulario" class="p-3 d-flex flex-column justify-content-center align-items-center">
     <h1 class="p-3">REGISTRARSE</h1>
-    <p class="text-success" *ngIf="successMessage">{{ successMessage }}</p>
-    <p class="text-danger" *ngIf="errorMessage">{{ errorMessage }}</p>
+    @if (successMessage) {
+    <p class="text-success">{{ successMessage }}</p>
+    }
+    @if (errorMessage) {
+    <p class="text-danger">{{ errorMessage }}</p>
+    }
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
         <div class="upload-zone border border-2 border-primary border-dashed rounded-4 p-4 text-center bg-light shadow-sm mx-auto mb-4"
             style="max-width: 500px;" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)"
             (drop)="onDrop($event)">
 
-            <div class="upload-overlay" *ngIf="isDragging">
+            @if (isDragging) {
+            <div class="upload-overlay">
                 <div class="text-center">
                     <i class="bi bi-cloud-arrow-up-fill fs-1 d-block mb-2"></i>
                     <div>Soltar para subir imagen</div>
                 </div>
             </div>
+            }
+            
 
             <img [src]="imagePreview || 'assets/default-avatar.jpg'" alt="avatar"
                 class="avatar-preview rounded-4 shadow mb-3">

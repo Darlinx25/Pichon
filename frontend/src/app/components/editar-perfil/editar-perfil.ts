@@ -3,10 +3,9 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { UserService } from '../../services/user-service';
 import { environment } from '../../../environments/environment';
-import { NgIf } from '@angular/common';
 @Component({
   selector: 'app-editar-perfil',
-  imports: [ReactiveFormsModule, NgIf, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './editar-perfil.html',
   styleUrl: './editar-perfil.scss',
 })
