@@ -23,6 +23,7 @@ export class Sidebar implements AfterViewInit {
   usuariosEncontrados: any[] = [];
   listaUsuarios: any[] = [];
   contactos: any[] = [];
+  usuarioSeleccionado: any = null;
 
   searchForm = this.formBuilder.group({
     busqueda: ['']
@@ -72,6 +73,7 @@ export class Sidebar implements AfterViewInit {
     this.router.navigate(['/']);
   }
   seleccionarUsuario(usuario: any) {
+    this.usuarioSeleccionado = usuario;
     this.chatService.selectUser(usuario);
     this.usuariosEncontrados = [];
   }
