@@ -3,33 +3,22 @@
     <div class="d-flex flex-column flex-grow-1" style="min-width:0;">
         @if (selectedUser) {
         <div class="border rounded-3 mx-0 mb-1 d-flex align-items-center px-3 gap-2" style="height:100px;">
-            @if (selectedUser.img) {
-            <img
-            [src]="user.img
-                ? apiBaseUrl + '/img/' + selectedUser.img
-                : 'assets/default-avatar.jpg'"
-            (error)="onImageError($event)"
-            alt="avatar"
-            style="width:60px;height:60px;border-radius:50%;object-fit:cover;" />
-            }
+            <img [src]="selectedUser.img ? apiBaseUrl + '/img/' + selectedUser.img : 'assets/default-avatar.jpg'" (error)="onImageError($event)" alt="avatar"
+                style="width:60px;height:60px;border-radius:50%;object-fit:cover;" />
             <span class="fw-bold">{{ selectedUser.alias }}</span>
-            
-        </div> 
+
+        </div>
         <div #msgContainer class="msgContainer d-flex flex-column p-2" style="height:82%;overflow-y:auto;">
-    @for (msg of messages; track $index) {
-    <div
-        class="mb-1 p-2 rounded shadow-sm text-break"
-        [class.ms-auto]="msg.side === 'outgoing'"
-        [class.me-auto]="msg.side !== 'outgoing'"
-        [class.message-outgoing]="msg.side === 'outgoing'"
-       
-        [class.bg-light]="msg.side !== 'outgoing'"
-        style="max-width:70%; white-space:pre-wrap; overflow-wrap:break-word; word-break:break-word;">
-        {{ msg.data }}
-    </div>
-    {{ scrollearAbajo() }}
-    }
-</div>
+            @for (msg of messages; track $index) {
+            <div class="mb-1 p-2 rounded shadow-sm text-break" [class.ms-auto]="msg.side === 'outgoing'"
+                [class.me-auto]="msg.side !== 'outgoing'" [class.message-outgoing]="msg.side === 'outgoing'"
+                [class.bg-light]="msg.side !== 'outgoing'"
+                style="max-width:70%; white-space:pre-wrap; overflow-wrap:break-word; word-break:break-word;">
+                {{ msg.data }}
+            </div>
+            {{ scrollearAbajo() }}
+            }
+        </div>
         } @else {
         <div class="d-flex flex-column justify-content-center align-items-center flex-grow-1 bg-light">
             <p class="text-muted fs-5">Seleccioná un usuario para empezar a chatear</p>

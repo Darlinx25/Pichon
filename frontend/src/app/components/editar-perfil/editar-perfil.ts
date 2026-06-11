@@ -56,7 +56,7 @@ export class EditarPerfil implements OnInit {
     }
   }
 
-    private processFile(file: File) {
+  private processFile(file: File) {
     this.selectedFile = file;
     const reader = new FileReader();
     reader.onload = () => {
@@ -72,23 +72,23 @@ export class EditarPerfil implements OnInit {
     if (input.files?.[0]) this.processFile(input.files[0]);
   }
 
-onDragOver(event: DragEvent) {
-  event.preventDefault();
-  this.isDragging = true;
-}
+  onDragOver(event: DragEvent) {
+    event.preventDefault();
+    this.isDragging = true;
+  }
 
-onDragLeave(event: DragEvent) {
-  event.preventDefault();
-  this.isDragging = false;
-}
+  onDragLeave(event: DragEvent) {
+    event.preventDefault();
+    this.isDragging = false;
+  }
 
-onDrop(event: DragEvent) {
+  onDrop(event: DragEvent) {
     event.preventDefault();
     this.isDragging = false;
     if (event.dataTransfer?.files[0]) this.processFile(event.dataTransfer.files[0]);
     this.cdr.detectChanges();
   }
-  
+
   onImageError(event: Event): void {
     const img = event.target as HTMLImageElement;
     img.src = 'assets/default-avatar.jpg';
@@ -111,14 +111,16 @@ onDrop(event: DragEvent) {
         if (res.success) {
           this.successMessage = res.message;
           this.errorMessage = '';
-          const user = JSON.parse(localStorage.getItem('user') || '{}');
-          user.alias = this.editForm.get('alias')?.value;
-          localStorage.setItem('user', JSON.stringify(user));
-          this.cdr.detectChanges();
+          this.userService.getPerfil(this.user.id).subscribe(data => {
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            user.alias = data.alias;
+            user.img = data.img;
+            user.email = data.email;
+            localStorage.setItem('user', JSON.stringify(user));
+          });
         } else {
           this.errorMessage = res.error;
           this.successMessage = '';
-          this.cdr.detectChanges();
         }
       },
       error: (err) => {
