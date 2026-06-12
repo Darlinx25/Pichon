@@ -38,8 +38,8 @@ class ChatServer implements MessageComponentInterface
         $fromId = (int)$data['fromId'];
         $toId = (int)$data['to'];
 
-        mysqli_query($db, "INSERT INTO mensaje (id_chat, id_usuario, contenido, fecha) 
-            VALUES ($chatId, $fromId, '$texto', NOW())");
+        mysqli_query($db, "INSERT INTO mensaje (id_chat, id_usuario, contenido, fecha, leido) 
+            VALUES ($chatId, $fromId, '$texto', NOW(), 0)");
 
         $idMensaje = mysqli_insert_id($db);
         $result = mysqli_query($db, "SELECT * FROM mensaje WHERE id_mensaje = $idMensaje");

@@ -52,8 +52,12 @@ export class MessageWindow implements OnInit, OnDestroy {
     });
     this.messageSub = this.webSocketService.getMessages().subscribe(msg => {
       if (Number(msg.id_chat) !== this.chatId) {
+        if (msg.id_usuario !== this.user.id) {
+          this.chatService.incrementUnread(msg.id_usuario);
+        }
         return;
       }
+      this.chatService.markAsRead(this.chatId, Number(this.user.id));
       this.messages.push({
         data: msg.contenido,
         fecha: msg.fecha,
@@ -77,6 +81,10 @@ export class MessageWindow implements OnInit, OnDestroy {
       }
     }).subscribe(response => {
       this.chatId = response.id_chat;
+      if (this.chatId !== null) {
+        this.chatService.markAsRead(this.chatId, Number(this.user.id));
+      }
+      this.chatService.clearUnread(idUsuario);
       const mensajes = response.messages ?? [];
       this.messages = mensajes.map((mensaje: any) => {
         const esMio = mensaje.id_usuario === Number(this.user.id);

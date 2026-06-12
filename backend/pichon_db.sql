@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql:3306
--- Generation Time: Jun 10, 2026 at 10:40 PM
+-- Generation Time: Jun 12, 2026 at 10:52 PM
 -- Server version: 8.0.46
 -- PHP Version: 8.3.31
 
@@ -33,6 +33,18 @@ CREATE TABLE `chat` (
   `id_usuario2` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+-- Dumping data for table `chat`
+--
+
+INSERT INTO `chat` (`id_chat`, `id_usuario1`, `id_usuario2`) VALUES
+(1, 1, 2),
+(2, 2, 2),
+(3, 1, 3),
+(4, 1, 4),
+(5, 1, 1),
+(6, 3, 2);
+
 -- --------------------------------------------------------
 
 --
@@ -55,7 +67,8 @@ CREATE TABLE `mensaje` (
   `id_chat` int NOT NULL,
   `id_usuario` int NOT NULL,
   `contenido` text NOT NULL,
-  `fecha` datetime NOT NULL
+  `fecha` datetime NOT NULL,
+  `leido` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -151,13 +164,13 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT for table `chat`
 --
 ALTER TABLE `chat`
-  MODIFY `id_chat` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id_chat` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `mensaje`
 --
 ALTER TABLE `mensaje`
-  MODIFY `id_mensaje` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id_mensaje` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 --
 -- AUTO_INCREMENT for table `usuario`

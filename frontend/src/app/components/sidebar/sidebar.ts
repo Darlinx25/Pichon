@@ -29,6 +29,8 @@ export class Sidebar implements AfterViewInit {
     busqueda: ['']
   });
 
+  unreadCounts: Map<number, number> = new Map();
+
   constructor(
     private userService: UserService,
     private cdr: ChangeDetectorRef,
@@ -58,9 +60,15 @@ export class Sidebar implements AfterViewInit {
       this.cdr.detectChanges();
     });
     this.userService.listarContactos(this.user.id).subscribe((contactos) => {
-    this.contactos = contactos;
-    this.cdr.detectChanges();
-});
+      this.contactos = contactos;
+      this.cdr.detectChanges();
+    });
+
+    this.chatService.unreadCounts$.subscribe(counts => {
+      this.unreadCounts = counts;
+      this.cdr.detectChanges();
+    });
+    this.chatService.loadInitialUnreadCounts(this.user.id);
   }
 
   ngAfterViewInit() {

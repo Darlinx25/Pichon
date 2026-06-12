@@ -52,12 +52,18 @@
         <div class="tab-pane fade show active h-100" id="chat" role="tabpanel" aria-labelledby="chat-tab">
             <div class="h-100 overflow-auto p-2">
                 @for (user of listaUsuarios; track user.id) {
-                <div class="user-item py-4 mb-2 ps-3" (click)="seleccionarUsuario(user)" [class.user-selected]="usuarioSeleccionado?.id === user.id" style="cursor:pointer;">
-                    <img [src]="user.img
+                <div class="user-item py-4 mb-2 ps-3" (click)="seleccionarUsuario(user)"
+                    [class.user-selected]="usuarioSeleccionado?.id === user.id" style="cursor:pointer;">
+                    <div class="d-flex align-items-center">
+                        <img [src]="user.img
                             ? apiBaseUrl + '/img/' + user.img
                             : 'assets/default-avatar.jpg'" (error)="onImageError($event)" alt="avatar"
-                        style="width:60px;height:60px;border-radius:50%;object-fit:cover;" />
-                    {{ user.alias }}
+                            style="width:60px;height:60px;border-radius:50%;object-fit:cover;" />
+                        <span class="ms-2">{{ user.alias }}</span>
+                        @if (unreadCounts.get(user.id)) {
+                        <span class="badge bg-danger rounded-pill ms-auto me-2">{{ unreadCounts.get(user.id) }}</span>
+                        }
+                    </div>
                 </div>
                 }
             </div>
