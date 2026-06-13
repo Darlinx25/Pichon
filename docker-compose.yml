@@ -33,6 +33,13 @@ services:
       mysql:
         condition: service_healthy
 
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: pichon_mailpit
+    restart: unless-stopped
+    ports:
+      - "8025:8025"
+  
   websocket-server:
     build:
       context: ./backend
@@ -71,6 +78,8 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
+      mailpit:
+        condition: service_started
       websocket-server:
         condition: service_started      
 

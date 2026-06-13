@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { environment } from '../../../environments/environment';
@@ -16,7 +16,8 @@ export class Activacion implements OnInit {
   success = false;
   constructor(
     private route: ActivatedRoute,
-    private http: HttpClient
+    private http: HttpClient,
+    private cdr: ChangeDetectorRef
   ) {}
   ngOnInit() {
     const token = this.route.snapshot.queryParamMap.get('token');
@@ -36,10 +37,12 @@ export class Activacion implements OnInit {
           this.mensaje = res.error!;
         }
         this.cargando = false;
+        this.cdr.detectChanges();
       },
       error: () => {
         this.mensaje = 'Error de conexión con el servidor';
         this.cargando = false;
+        this.cdr.detectChanges();
       },
     });
   }
