@@ -5,6 +5,7 @@ import { MessageWindow } from './components/message-window/message-window'
 import { Usuarios } from './components/usuarios/usuarios';
 import { Perfil } from './components/perfil/perfil';
 import { EditarPerfil} from './components/editar-perfil/editar-perfil'
+import { Activacion } from './components/activacion/activacion';
 export const routes: Routes = [
     { path: 'register', component: Register},
     { path: 'login', component: Login},
@@ -12,6 +13,7 @@ export const routes: Routes = [
     { path: 'chat', component: MessageWindow},
     { path: 'usuarios', component: Usuarios},
     { path: 'perfil/:id', component: Perfil },
-    { path: 'editar-perfil', component: EditarPerfil}
+    { path: 'editar-perfil', component: EditarPerfil},
+    { path: 'activar', component: Activacion }
     
 ];

@@ -6,7 +6,7 @@ $conexion = require "./db.php";
 $data = json_decode(file_get_contents("php://input"), true);
 $username = $data["username"];
 $password = $data["password"];
-$sql = "SELECT id, username, email, password, alias, img FROM usuario WHERE username = '$username'";
+$sql = "SELECT id, username, email, password, alias, img FROM usuario WHERE username = '$username' AND activado = 1";
 $resultado = mysqli_query($conexion, $sql);
 if (mysqli_num_rows($resultado) == 0) {
     echo json_encode(["error" => "Credenciales inválidas"]);

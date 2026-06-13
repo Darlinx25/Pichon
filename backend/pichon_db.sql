@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql:3306
--- Generation Time: Jun 12, 2026 at 10:52 PM
+-- Generation Time: Jun 13, 2026 at 07:13 PM
 -- Server version: 8.0.46
 -- PHP Version: 8.3.31
 
@@ -107,18 +107,20 @@ CREATE TABLE `usuario` (
   `email` varchar(255) NOT NULL,
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `alias` varchar(30) NOT NULL,
-  `img` varchar(255) DEFAULT NULL
+  `img` varchar(255) DEFAULT NULL,
+  `token` varchar(255) NOT NULL,
+  `activado` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `usuario`
 --
 
-INSERT INTO `usuario` (`id`, `username`, `email`, `password`, `alias`, `img`) VALUES
-(1, 'facundo', 'facundo@hotmail.com', '$2y$10$YE3IGd3IuxEhqhefqTUUHub6q3a73mBhdM2az0C0ZnX.QEacAKUXq', 'facundo', ''),
-(2, 'alexis', 'alexis@hotmail.com', '$2y$10$u3pAl30Kdrc5I8qYrRisRu5NSgwIdXKRx3Fkn40XPSZFYeKjQQmfO', 'alexis', ''),
-(3, 'ignacio', 'ignacio@hotmail.com', '$2y$10$W/0czXBLERu6xrx8sA7EbeYCmG2SiSQhbVKF1BNIklhoC9JpQCI/O', 'ignacio', ''),
-(4, 'kevin', 'kevin@hotmail.com', '$2y$10$8Z14s0OGns5qdk.MjhyLjOGvz/p9vVvLsgXeyQUG4CebUBowy0VVi', 'kevin', '');
+INSERT INTO `usuario` (`id`, `username`, `email`, `password`, `alias`, `img`, `token`, `activado`) VALUES
+(1, 'facundo', 'facundo@hotmail.com', '$2y$10$YE3IGd3IuxEhqhefqTUUHub6q3a73mBhdM2az0C0ZnX.QEacAKUXq', 'facundo', '', '', 0),
+(2, 'alexis', 'alexis@hotmail.com', '$2y$10$u3pAl30Kdrc5I8qYrRisRu5NSgwIdXKRx3Fkn40XPSZFYeKjQQmfO', 'alexis', '', '', 0),
+(3, 'ignacio', 'ignacio@hotmail.com', '$2y$10$W/0czXBLERu6xrx8sA7EbeYCmG2SiSQhbVKF1BNIklhoC9JpQCI/O', 'ignacio', '', '', 0),
+(4, 'kevin', 'kevin@hotmail.com', '$2y$10$8Z14s0OGns5qdk.MjhyLjOGvz/p9vVvLsgXeyQUG4CebUBowy0VVi', 'kevin', '', '', 0);
 
 --
 -- Indexes for dumped tables
@@ -170,13 +172,13 @@ ALTER TABLE `chat`
 -- AUTO_INCREMENT for table `mensaje`
 --
 ALTER TABLE `mensaje`
-  MODIFY `id_mensaje` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+  MODIFY `id_mensaje` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Constraints for dumped tables

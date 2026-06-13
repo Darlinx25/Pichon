@@ -1,0 +1,19 @@
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="card shadow" style="max-width: 500px; width: 100%;">
+        <div class="card-body text-center p-5">
+            @if (cargando) {
+            <div class="spinner-border text-primary mb-3"></div>
+            }
+            @if (!cargando) {
+            <div>
+                <div class="alert" [class.alert-success]="success" [class.alert-danger]="!success">
+                    {{ mensaje }}
+                </div>
+                @if (success) {
+                <a routerLink="/login" class="btn btn-primary">Ir a iniciar sesión</a>
+                }
+            </div>
+            }
+        </div>
+    </div>
+</div>

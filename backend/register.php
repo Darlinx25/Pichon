@@ -39,7 +39,8 @@ if (isset($_FILES["imagen"]) && $_FILES["imagen"]["error"] === UPLOAD_ERR_OK) {
     }
 }
 
-$sql = "INSERT INTO usuario (username, email, password, alias, img) VALUES ('$username', '$email', '$hash', '$alias', '$imgPath')";
+$token = bin2hex(random_bytes(32));
+$sql = "INSERT INTO usuario (username, email, password, alias, img, token) VALUES ('$username', '$email', '$hash', '$alias', '$imgPath', '$token')";
 if (mysqli_query($conexion, $sql)) {
     $idUsuario = mysqli_insert_id($conexion);
     $sql2 = "INSERT INTO perfil (id) VALUES ($idUsuario)";
@@ -48,6 +49,7 @@ if (mysqli_query($conexion, $sql)) {
             "success" => true,
             "message" => "Usuario creado correctamente"
         ]);
+        mandarCorreoActivacion($email, "http://localhost:4200", $token);
     } else {
         echo json_encode([
             "error" => "Error al crear el perfil"
@@ -58,4 +60,12 @@ if (mysqli_query($conexion, $sql)) {
 }
 
 
-?>
+function mandarCorreoActivacion($userEmail, $website, $token) {
+    //$website formato: http://website.com o http://localhost:4200
+    $activationLink = $website . "/activar?token=" . $token;
+    $to = $userEmail;
+    $subject = "Activa tu cuenta";
+    $message = "Haz click en el link para activar tu cuenta:\n\n" . $activationLink;
+    $headers = "From: no-reply@pichon.com";
+    mail($to, $subject, $message, $headers);
+}
