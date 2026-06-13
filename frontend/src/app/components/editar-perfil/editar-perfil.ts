@@ -1,16 +1,18 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { UserService } from '../../services/user-service';
+import { AuthService } from '../../services/auth.service';
 import { environment } from '../../../environments/environment';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-editar-perfil',
   imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './editar-perfil.html',
   styleUrl: './editar-perfil.scss',
 })
-export class EditarPerfil implements OnInit {
-  user: any;
+export class EditarPerfil implements OnInit, OnDestroy {
+  user: any = null;
   apiBaseUrl = environment.apiBaseUrl;
   perfilData: any = null;
   selectedFile: File | null = null;
@@ -19,13 +21,14 @@ export class EditarPerfil implements OnInit {
   successMessage = '';
   errorMessage = '';
   editForm: any;
+  private authSub!: Subscription;
   constructor(
     private formBuilder: FormBuilder,
     private userService: UserService,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private authService: AuthService
   ) {
-    this.user = JSON.parse(localStorage.getItem('user') || '{}');
     this.editForm = this.formBuilder.group({
       username: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -37,24 +40,26 @@ export class EditarPerfil implements OnInit {
     });
   }
   ngOnInit() {
-    const userId = this.user?.id;
-    if (userId) {
-      this.userService.getPerfil(userId).subscribe(data => {
-        this.perfilData = data;
-        this.editForm.patchValue({
-          username: data.username,
-          email: data.email,
-          alias: data.alias,
-          genero: data.genero,
-          fecha_nacimiento: data.fecha_nacimiento,
-          idioma: data.idioma,
-          estado: data.estado,
+    this.authSub = this.authService.user$.subscribe(user => {
+      if (user === undefined) return;
+      this.user = user;
+      if (user?.id) {
+        this.userService.getPerfil(user.id).subscribe(data => {
+          this.perfilData = data;
+          this.editForm.patchValue({
+            username: data.username,
+            email: data.email,
+            alias: data.alias,
+            genero: data.genero,
+            fecha_nacimiento: data.fecha_nacimiento,
+            idioma: data.idioma,
+            estado: data.estado,
+          });
+          this.cdr.detectChanges();
         });
-        this.cdr.detectChanges();
-      });
-    }
+      }
+    });
   }
-
   private processFile(file: File) {
     this.selectedFile = file;
     const reader = new FileReader();
@@ -65,29 +70,24 @@ export class EditarPerfil implements OnInit {
     reader.readAsDataURL(file);
     this.cdr.detectChanges();
   }
-
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input.files?.[0]) this.processFile(input.files[0]);
   }
-
   onDragOver(event: DragEvent) {
     event.preventDefault();
     this.isDragging = true;
   }
-
   onDragLeave(event: DragEvent) {
     event.preventDefault();
     this.isDragging = false;
   }
-
   onDrop(event: DragEvent) {
     event.preventDefault();
     this.isDragging = false;
     if (event.dataTransfer?.files[0]) this.processFile(event.dataTransfer.files[0]);
     this.cdr.detectChanges();
   }
-
   onImageError(event: Event): void {
     const img = event.target as HTMLImageElement;
     img.src = 'assets/default-avatar.jpg';
@@ -95,7 +95,6 @@ export class EditarPerfil implements OnInit {
   onSubmit() {
     if (this.editForm.invalid) return;
     const formData = new FormData();
-    formData.append('id', this.user.id);
     formData.append('email', this.editForm.get('email')?.value ?? '');
     formData.append('alias', this.editForm.get('alias')?.value ?? '');
     formData.append('genero', this.editForm.get('genero')?.value ?? '');
@@ -111,11 +110,13 @@ export class EditarPerfil implements OnInit {
           this.successMessage = res.message;
           this.errorMessage = '';
           this.userService.getPerfil(this.user.id).subscribe(data => {
-            const user = JSON.parse(localStorage.getItem('user') || '{}');
-            user.alias = data.alias;
-            user.img = data.img;
-            user.email = data.email;
-            localStorage.setItem('user', JSON.stringify(user));
+            this.authService.setUser({
+              id: this.user.id,
+              username: this.user.username,
+              alias: data.alias,
+              img: data.img,
+              email: data.email
+            });
           });
         } else {
           this.errorMessage = res.error;
@@ -128,5 +129,8 @@ export class EditarPerfil implements OnInit {
         this.cdr.detectChanges();
       },
     });
+  }
+  ngOnDestroy() {
+    this.authSub?.unsubscribe();
   }
 }

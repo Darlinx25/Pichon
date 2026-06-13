@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit, ChangeDetectorRef, AfterViewChecked, ViewChild, ElementRef } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink, Router } from '@angular/router';
 import { Sidebar } from '../sidebar/sidebar'
@@ -7,43 +7,42 @@ import { Websocket } from '../../services/websocketService';
 import { AudioService } from '../../services/audio-service';
 import { HttpClient } from '@angular/common/http';
 import { ChatService } from '../../services/chat-servise';
+import { AuthService } from '../../services/auth.service';
 import { environment } from '../../../environments/environment';
 import { CommonModule } from '@angular/common';
-
-
 @Component({
   selector: 'app-message-window',
   imports: [ReactiveFormsModule, RouterLink, CommonModule, Sidebar],
   templateUrl: './message-window.html',
   styleUrl: './message-window.scss',
 })
-
 export class MessageWindow implements OnInit, OnDestroy {
   @ViewChild('mensajeInput') mensajeInput!: ElementRef<HTMLTextAreaElement>;
   messages: any[] = [];
   selectedUser: any = null;
   chatId: number | null = null;
-  user = JSON.parse(localStorage.getItem('user') || '{}');
+  user: any = null;
   apiBaseUrl = environment.apiBaseUrl;
-
   constructor(
     private webSocketService: Websocket,
     private cdr: ChangeDetectorRef,
     private chatService: ChatService,
     private http: HttpClient,
-    private audioService: AudioService) { }
+    private audioService: AudioService,
+    private authService: AuthService) { }
+  private authSub!: Subscription;
   private userSub!: Subscription;
   private messageSub!: Subscription;
-
   formBuilder = inject(FormBuilder);
   router = inject(Router);
-
-  chatForm = this.formBuilder.group({
-    mensaje: ['', Validators.required]
-  });
-
+  chatForm = this.formBuilder.group({ mensaje: ['', Validators.required] });
   ngOnInit() {
-    if (!this.user.id) { this.router.navigate(['/']); return; }
+    this.authSub = this.authService.user$.subscribe(user => {
+      if (user === undefined) return;
+      this.user = user;
+      if (!user) { this.router.navigate(['/']); return; }
+      this.webSocketService.authenticate(user.id);
+    });
     this.userSub = this.chatService.selectedUser$.subscribe(user => {
       this.selectedUser = user;
       this.cargarChat(user.id);
@@ -51,44 +50,38 @@ export class MessageWindow implements OnInit, OnDestroy {
       this.cdr.detectChanges();
     });
     this.messageSub = this.webSocketService.getMessages().subscribe(msg => {
+      if (!this.user) return;
       if (Number(msg.id_chat) !== this.chatId) {
         if (msg.id_usuario !== this.user.id) {
           this.chatService.incrementUnread(msg.id_usuario);
         }
         return;
       }
-      this.chatService.markAsRead(this.chatId, Number(this.user.id));
+      this.chatService.markAsRead(this.chatId!);
       this.messages.push({
         data: msg.contenido,
         fecha: msg.fecha,
         fromId: msg.id_usuario,
         side: msg.id_usuario === this.user.id ? 'outgoing' : 'incoming'
       });
-
       this.cdr.detectChanges();
-
       if (msg.id_usuario !== this.user.id) {
         this.audioService.playNotificacion();
       }
     });
   }
-
   cargarChat(idUsuario: number): void {
     this.http.get<any>(`${this.apiBaseUrl}/obtenerChat.php`, {
-      params: {
-        id_usuario1: this.user.id,
-        id_usuario2: idUsuario
-      }
+      params: { id_contacto: idUsuario }
     }).subscribe(response => {
       this.chatId = response.id_chat;
       if (this.chatId !== null) {
-        this.chatService.markAsRead(this.chatId, Number(this.user.id));
+        this.chatService.markAsRead(this.chatId);
       }
       this.chatService.clearUnread(idUsuario);
       const mensajes = response.messages ?? [];
       this.messages = mensajes.map((mensaje: any) => {
-        const esMio = mensaje.id_usuario === Number(this.user.id);
-
+        const esMio = mensaje.id_usuario === Number(this.user?.id);
         return {
           data: mensaje.contenido,
           fecha: mensaje.fecha,
@@ -96,17 +89,15 @@ export class MessageWindow implements OnInit, OnDestroy {
           side: esMio ? 'outgoing' : 'incoming'
         };
       });
-
       this.cdr.detectChanges();
     });
   }
-
   enviarMensaje() {
     if (this.chatForm.invalid || !this.selectedUser || !this.chatId) return;
     const msg = {
       type: 'message',
-      from: this.user.alias,
-      fromId: this.user.id,
+      from: this.user?.alias,
+      fromId: this.user?.id,
       to: this.selectedUser.id,
       chatId: this.chatId,
       data: this.chatForm.value.mensaje
@@ -114,30 +105,23 @@ export class MessageWindow implements OnInit, OnDestroy {
     this.webSocketService.sendMessage(msg);
     this.chatForm.reset();
   }
-
-
   ngOnDestroy(): void {
+    this.authSub?.unsubscribe();
     this.messageSub?.unsubscribe();
     this.userSub?.unsubscribe();
   }
-
   manejadorTeclaEnter(event: Event) {
     const keyboardEvt = event as KeyboardEvent;
-
     if (!keyboardEvt.shiftKey) {
       keyboardEvt.preventDefault();
       this.enviarMensaje();
     }
   }
-
-  @ViewChild('msgContainer')
-  private msgContainer!: ElementRef;
-
+  @ViewChild('msgContainer') private msgContainer!: ElementRef;
   scrollearAbajo(): void {
     const element = this.msgContainer.nativeElement;
     element.scrollTop = element.scrollHeight;
   }
-
   onImageError(event: Event): void {
     const img = event.target as HTMLImageElement;
     img.src = 'assets/default-avatar.jpg';

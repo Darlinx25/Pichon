@@ -2,15 +2,12 @@ import { Injectable } from '@angular/core';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-
 @Injectable({ providedIn: 'root' })
 export class ChatService {
   selectedUser$ = new Subject<any>();
   private unreadCounts = new Map<number, number>();
   unreadCounts$ = new BehaviorSubject<Map<number, number>>(new Map());
-
   constructor(private http: HttpClient) { }
-  
   selectUser(user: any) {
     this.selectedUser$.next(user);
   }
@@ -25,9 +22,9 @@ export class ChatService {
     this.unreadCounts.delete(id);
     this.unreadCounts$.next(new Map(this.unreadCounts));
   }
-  loadInitialUnreadCounts(userId: number) {
+  loadInitialUnreadCounts() {                       
     this.http.get<Record<string, number>>(
-      `${environment.apiBaseUrl}/contarNoLeidos.php?id_usuario=${userId}`
+      `${environment.apiBaseUrl}/contarNoLeidos.php`
     ).subscribe(counts => {
       for (const [senderId, count] of Object.entries(counts)) {
         this.unreadCounts.set(Number(senderId), count);
@@ -35,10 +32,9 @@ export class ChatService {
       this.unreadCounts$.next(new Map(this.unreadCounts));
     });
   }
-  markAsRead(chatId: number, userId: number) {
+  markAsRead(chatId: number) {                      
     this.http.post(`${environment.apiBaseUrl}/marcarLeidos.php`, {
-      id_chat: chatId,
-      id_usuario: userId
+      id_chat: chatId
     }).subscribe();
   }
 }
