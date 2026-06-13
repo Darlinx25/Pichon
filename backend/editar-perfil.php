@@ -1,15 +1,9 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+require __DIR__ . '/session.php';
 header("Content-Type: application/json");
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: POST");
-header("Access-Control-Allow-Headers: Content-Type");
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    exit;
-}
+requiereAutenticacion();
 $conexion = require "./db.php";
-$id = (int)($_POST["id"] ?? 0);
+$id = usuarioId();                      
 $email = $_POST["email"] ?? '';
 $alias = $_POST["alias"] ?? '';
 $genero = $_POST["genero"] ?? '';
@@ -46,6 +40,9 @@ if ($imgPath) {
 }
 $sql2 = "UPDATE perfil SET genero='$genero', fecha_nacimiento=$fecha_nacimiento, idioma='$idioma', estado='$estado' WHERE id=$id";
 if (mysqli_query($conexion, $sql1) && mysqli_query($conexion, $sql2)) {
+    $_SESSION['alias'] = $alias;
+    $_SESSION['email'] = $email;
+    if ($imgPath) $_SESSION['img'] = $imgPath;
     echo json_encode(["success" => true, "message" => "Perfil actualizado correctamente"]);
 } else {
     if ($imgPath) {
@@ -53,4 +50,3 @@ if (mysqli_query($conexion, $sql1) && mysqli_query($conexion, $sql2)) {
     }
     echo json_encode(["error" => "Error al actualizar el perfil: " . mysqli_error($conexion)]);
 }
-?>

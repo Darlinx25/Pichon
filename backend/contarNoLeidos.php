@@ -1,14 +1,9 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+require __DIR__ . '/session.php';
 header("Content-Type: application/json");
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET");
-header("Access-Control-Allow-Headers: Content-Type");
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') { exit; }
-
+requiereAutenticacion();
 $conexion = require __DIR__ . '/db.php';
-$userId = (int)$_GET['id_usuario'];
+$userId = usuarioId();                  
 $result = mysqli_query($conexion, "
     SELECT m.id_usuario AS id_remitente, COUNT(*) AS no_leidos
     FROM mensaje m
@@ -18,7 +13,6 @@ $result = mysqli_query($conexion, "
     AND m.leido = 0
     GROUP BY m.id_usuario
 ");
-
 $unread = [];
 while ($row = mysqli_fetch_assoc($result)) {
     $unread[(int)$row['id_remitente']] = (int)$row['no_leidos'];
