@@ -12,6 +12,7 @@ import { environment } from '../../../environments/environment';
 })
 export class Recovery {
   recoveryForm: any;
+  correoEnviado: boolean = false;
 
   constructor(private formBuilder: FormBuilder, private http: HttpClient) {
     this.recoveryForm = this.formBuilder.group({
@@ -24,5 +25,7 @@ export class Recovery {
     const formData = new FormData();
     formData.append('email', this.recoveryForm.get('email')?.value ?? '');
     this.http.post<any>(`${environment.apiBaseUrl}/recovery.php`, formData);
+
+    this.correoEnviado = true;
   }
 }
