@@ -28,6 +28,10 @@ sudo chown -R $USER:$USER /var/www/html
 
 - http://127.0.0.1:8080/
 
+### Acceso a Mailpit
+
+- http://127.0.0.1:8025/
+
 ### Librerias utilizadas
 
 - http://socketo.me/docs
