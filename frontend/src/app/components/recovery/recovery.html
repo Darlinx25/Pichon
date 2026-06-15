@@ -1,8 +1,6 @@
 <div id="formulario" class="p-3 d-flex flex-column justify-content-center align-items-center">
     <h1 class="p-3">RECUPERACIÓN</h1>
-    @if (correoEnviado) {
-        <p class="text-success">Correo de recuperación enviado.</p>
-    }
+    <p [class.text-success]="success" [class.text-danger]="!success">{{ mensaje }}</p>
     <form [formGroup]="recoveryForm" (ngSubmit)="onSubmit()">
         <div class="d-flex gap-3 mb-3">
             <label class="form-label w-30" for="title">Email</label>

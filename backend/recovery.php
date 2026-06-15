@@ -19,6 +19,8 @@ if ($usuario = $resultado->fetch_assoc()) {
     } else {
         echo json_encode(["error" => "Error al enviar correo de recuperación."]);
     }
+} else {
+    echo json_encode(["error" => "Error al enviar correo de recuperación."]);
 }
 
 function mandarCorreoRecuperacion($userEmail, $website, $token) {

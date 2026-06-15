@@ -35,6 +35,7 @@ export class Activacion implements OnInit {
           this.success = true;
         } else {
           this.mensaje = res.error!;
+          this.success = false;
         }
         this.cargando = false;
         this.cdr.detectChanges();
