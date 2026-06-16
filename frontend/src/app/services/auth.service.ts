@@ -3,10 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
+import { Router } from '@angular/router';
+import { map, filter, take } from 'rxjs/operators';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private http = inject(HttpClient);
   private userSubject = new BehaviorSubject<any>(undefined);
+  private router = inject(Router);
   user$: Observable<any> = this.userSubject.asObservable();
   constructor() {
     this.checkSession().subscribe();
@@ -36,6 +39,8 @@ export class AuthService {
       tap(res => {
         if (res.authenticated && res.user) {
           this.userSubject.next(res.user);
+        }else {
+          this.userSubject.next(null);
         }
       })
     );
@@ -52,5 +57,14 @@ export class AuthService {
   }
   getCurrentUser(): any {
     return this.userSubject.getValue();
+  }
+
+  canActivate() {
+    return this.user$.pipe(filter(u => u !== undefined),take(1),map(user => {
+    if (!user) {
+      this.router.navigate(['/']);
+      return false;
+    }
+    return true;}));
   }
 }

@@ -8,14 +8,16 @@ import { EditarPerfil} from './components/editar-perfil/editar-perfil'
 import { Activacion } from './components/activacion/activacion';
 import { Recovery } from './components/recovery/recovery';
 import { PasswordReset } from './components/password-reset/password-reset';
+import { AuthService } from './services/auth.service';
+
 export const routes: Routes = [
     { path: 'register', component: Register},
     { path: 'login', component: Login},
     { path: '', component: Login},
-    { path: 'chat', component: MessageWindow},
-    { path: 'usuarios', component: Usuarios},
-    { path: 'perfil/:id', component: Perfil },
-    { path: 'editar-perfil', component: EditarPerfil},
+    { path: 'chat', component: MessageWindow, canActivate: [AuthService]},
+    { path: 'usuarios', component: Usuarios , canActivate: [AuthService]},
+    { path: 'perfil/:id', component: Perfil , canActivate: [AuthService] },
+    { path: 'editar-perfil', component: EditarPerfil , canActivate: [AuthService]},
     { path: 'activar', component: Activacion },
     { path: 'recovery', component: Recovery },
     { path: 'password-reset', component: PasswordReset }
