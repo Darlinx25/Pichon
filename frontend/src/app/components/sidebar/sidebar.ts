@@ -7,9 +7,10 @@ import { AuthService } from '../../services/auth.service';
 import { debounceTime, distinctUntilChanged, of, Subscription, switchMap } from 'rxjs';
 import { ChatService } from '../../services/chat-servise';
 import * as bootstrap from 'bootstrap';
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-sidebar',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, CommonModule],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.scss',
 })

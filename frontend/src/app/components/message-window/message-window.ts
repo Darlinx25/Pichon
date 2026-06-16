@@ -61,15 +61,15 @@ export class MessageWindow implements OnInit, OnDestroy {
     this.messageSub = this.webSocketService.getMessages().subscribe(msg => {
       if (!this.user) return;
       if (Number(msg.id_chat) !== this.chatId) {
-        if (msg.id_usuario !== this.user.id) {
-          this.chatService.incrementUnread(msg.id_usuario);
-        }
         this.lastMessages.set(Number(msg.id_usuario), {
           id: Number(msg.id_usuario),
           ultimo_contenido: msg.contenido,
           ultima_fecha: msg.fecha,
           id_usuario_ultimo: Number(msg.id_usuario)
         });
+        if (msg.id_usuario !== this.user.id) {
+          this.chatService.incrementUnread(msg.id_usuario);
+        }
         return;
       }
       this.chatService.markAsRead(this.chatId!);
