@@ -1,5 +1,4 @@
-
-<img width="1912" height="914" alt="Ejemplo" src="https://github.com/user-attachments/assets/b705580f-aa1f-43fa-ba81-1b910d0e0a62" />
+<img width="1918" height="911" alt="image" src="https://github.com/user-attachments/assets/0e15a3fc-fbb3-4872-83e7-d5b711536dc1" />
 
 
 ## Levantar servidor
