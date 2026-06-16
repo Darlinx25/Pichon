@@ -31,4 +31,8 @@ export class UserService {
   listarContactos() {                                
     return this.http.get<any[]>(`${environment.apiBaseUrl}/listarContactos.php`);
   }
+  listarChats() {                                
+    return this.http.get<any[]>(`${environment.apiBaseUrl}/listarChats.php`);
+  }
+
 }

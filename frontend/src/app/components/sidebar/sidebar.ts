@@ -59,15 +59,25 @@ export class Sidebar implements OnDestroy, AfterViewInit {
         this.usuariosEncontrados = usuarios;
         this.cdr.detectChanges();
       });
-    this.userService.listarUsuarios().subscribe(usuarios => {
+    this.userService.listarChats().subscribe(usuarios => {
       this.listaUsuarios = usuarios;
       this.cdr.detectChanges();
+    });
+    this.chatService.refreshChats$.subscribe(() => {
+      this.userService.listarChats().subscribe(usuarios => {
+        this.listaUsuarios = usuarios;
+        this.cdr.detectChanges();
+      });
     });
     this.chatService.unreadCounts$.subscribe(counts => {
       this.unreadCounts = counts;
       this.cdr.detectChanges();
     });
-  }
+    this.chatService.switchToChats$.subscribe(() => {
+      const tab = document.querySelector('#chat-tab');
+      if (tab) new bootstrap.Tab(tab).show();
+      });
+    }
   ngAfterViewInit() {
     const tabEls = document.querySelectorAll('button[data-bs-toggle="tab"]');
     tabEls.forEach(el => new bootstrap.Tab(el));

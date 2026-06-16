@@ -67,6 +67,7 @@ export class MessageWindow implements OnInit, OnDestroy {
           ultima_fecha: msg.fecha,
           id_usuario_ultimo: Number(msg.id_usuario)
         });
+        this.chatService.refreshChats$.next();
         if (msg.id_usuario !== this.user.id) {
           this.chatService.incrementUnread(msg.id_usuario);
         }
@@ -86,6 +87,7 @@ export class MessageWindow implements OnInit, OnDestroy {
         ultima_fecha: msg.fecha,
         id_usuario_ultimo: Number(msg.id_usuario)
       });
+      this.chatService.refreshChats$.next();
       this.cdr.detectChanges();
       if (msg.id_usuario !== this.user.id) {
         this.audioService.playNotificacion();
@@ -140,7 +142,9 @@ export class MessageWindow implements OnInit, OnDestroy {
       ultima_fecha: new Date().toISOString(),
       id_usuario_ultimo: this.user.id
     });
+    this.chatService.refreshChats$.next();
     this.chatForm.reset();
+    this.chatService.switchToChats$.next();
   }
   ngOnDestroy(): void {
     this.authSub?.unsubscribe();
