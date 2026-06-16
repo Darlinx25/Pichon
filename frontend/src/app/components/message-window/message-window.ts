@@ -19,6 +19,7 @@ import { CommonModule } from '@angular/common';
 export class MessageWindow implements OnInit, OnDestroy {
   @ViewChild('mensajeInput') mensajeInput!: ElementRef<HTMLTextAreaElement>;
   messages: any[] = [];
+  lastMessages: Map<number, any> = new Map();
   selectedUser: any = null;
   chatId: number | null = null;
   user: any = null;
@@ -42,6 +43,14 @@ export class MessageWindow implements OnInit, OnDestroy {
       this.user = user;
       if (!user) { this.router.navigate(['/']); return; }
       this.webSocketService.authenticate(user.id);
+
+      this.http.get<any[]>(`${this.apiBaseUrl}/ultimosMensajes.php`)
+        .subscribe(lista => {
+          for (const c of lista) {
+            this.lastMessages.set(c.id, c);
+          }
+          this.cdr.detectChanges();
+        });
     });
     this.userSub = this.chatService.selectedUser$.subscribe(user => {
       this.selectedUser = user;
@@ -55,6 +64,12 @@ export class MessageWindow implements OnInit, OnDestroy {
         if (msg.id_usuario !== this.user.id) {
           this.chatService.incrementUnread(msg.id_usuario);
         }
+        this.lastMessages.set(Number(msg.id_usuario), {
+          id: Number(msg.id_usuario),
+          ultimo_contenido: msg.contenido,
+          ultima_fecha: msg.fecha,
+          id_usuario_ultimo: Number(msg.id_usuario)
+        });
         return;
       }
       this.chatService.markAsRead(this.chatId!);
@@ -63,6 +78,13 @@ export class MessageWindow implements OnInit, OnDestroy {
         fecha: msg.fecha,
         fromId: msg.id_usuario,
         side: msg.id_usuario === this.user.id ? 'outgoing' : 'incoming'
+      });
+      const otroId = msg.id_usuario === this.user.id ? this.selectedUser.id : msg.id_usuario;
+      this.lastMessages.set(Number(otroId), {
+        id: Number(otroId),
+        ultimo_contenido: msg.contenido,
+        ultima_fecha: msg.fecha,
+        id_usuario_ultimo: Number(msg.id_usuario)
       });
       this.cdr.detectChanges();
       if (msg.id_usuario !== this.user.id) {
@@ -89,6 +111,15 @@ export class MessageWindow implements OnInit, OnDestroy {
           side: esMio ? 'outgoing' : 'incoming'
         };
       });
+      if (mensajes.length > 0) {
+        const ultimo = mensajes[mensajes.length - 1];
+        this.lastMessages.set(idUsuario, {
+          id: idUsuario,
+          ultimo_contenido: ultimo.contenido,
+          ultima_fecha: ultimo.fecha,
+          id_usuario_ultimo: ultimo.id_usuario
+        });
+      }
       this.cdr.detectChanges();
     });
   }
@@ -103,6 +134,12 @@ export class MessageWindow implements OnInit, OnDestroy {
       data: this.chatForm.value.mensaje
     };
     this.webSocketService.sendMessage(msg);
+    this.lastMessages.set(this.selectedUser.id, {
+      id: this.selectedUser.id,
+      ultimo_contenido: this.chatForm.value.mensaje,
+      ultima_fecha: new Date().toISOString(),
+      id_usuario_ultimo: this.user.id
+    });
     this.chatForm.reset();
   }
   ngOnDestroy(): void {

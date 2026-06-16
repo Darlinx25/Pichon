@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, OnDestroy, AfterViewInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnDestroy, AfterViewInit, Input } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
@@ -25,6 +25,7 @@ export class Sidebar implements OnDestroy, AfterViewInit {
   usuarioSeleccionado: any = null;
   searchForm = this.formBuilder.group({ busqueda: [''] });
   unreadCounts: Map<number, number> = new Map();
+  @Input() lastMessages: Map<number, any> = new Map();
   private authSub!: Subscription;
   constructor(
     private userService: UserService,

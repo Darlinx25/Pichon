@@ -1,5 +1,5 @@
 <div class="d-flex vh-100">
-    <app-sidebar class="w-25 flex-shrink-0" />
+    <app-sidebar class="w-25 flex-shrink-0" [lastMessages]="lastMessages" />
     <div class="d-flex flex-column flex-grow-1" style="min-width:0;">
         @if (selectedUser) {
         <div class="border rounded-3 mx-0 mb-1 d-flex align-items-center px-3 gap-2" style="height:100px;">
