@@ -10,6 +10,8 @@ import { ChatService } from '../../services/chat-servise';
 import { AuthService } from '../../services/auth.service';
 import { environment } from '../../../environments/environment';
 import { CommonModule } from '@angular/common';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+
 @Component({
   selector: 'app-message-window',
   imports: [ReactiveFormsModule, RouterLink, CommonModule, Sidebar],
@@ -30,10 +32,18 @@ export class MessageWindow implements OnInit, OnDestroy {
     private chatService: ChatService,
     private http: HttpClient,
     private audioService: AudioService,
-    private authService: AuthService) { }
+    private authService: AuthService,
+    private sanitizer: DomSanitizer) { }
   private authSub!: Subscription;
   private userSub!: Subscription;
   private messageSub!: Subscription;
+
+  urlify(text: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(
+      text.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>')
+    );
+  }
+  
   formBuilder = inject(FormBuilder);
   router = inject(Router);
   chatForm = this.formBuilder.group({ mensaje: ['', Validators.required] });
