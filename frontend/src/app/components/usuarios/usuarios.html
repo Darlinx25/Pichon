@@ -3,16 +3,59 @@
     <h4 class="m-0">Usuarios</h4>
     <a class="btn btn-primary btn-sm" routerLink="/chat">Regresar</a>
   </div>
+  <div class="mb-3 position-relative">
+    <form [formGroup]="searchForm">
+      <input id="busqueda" formControlName="busqueda" class="form-control" type="search"
+          placeholder="buscar usuario" aria-label="buscar usuario" />
+    </form>
+    @if (usuariosEncontrados.length > 0) {
+      <div class="position-absolute shadow" style="
+          top: 100%;
+          left: 0;
+          right: 0;
+          max-height: 300px;
+          overflow-y: auto;
+          z-index: 99999;
+          border: 1px solid rgba(200, 210, 220, 0.12);
+          border-radius: 8px;
+          background: #1a1d21;">
+        @for (usuario of usuariosEncontrados; track usuario.id) {
+          <div class="d-flex align-items-center gap-2 p-2 border-bottom" style="cursor:pointer;"
+              (click)="seleccionarUsuario(usuario)">
+            <img [src]="usuario.img
+                    ? apiBaseUrl + '/img/' + usuario.img
+                    : 'assets/default-avatar.jpg'" (error)="onImageError($event)" alt="avatar"
+                style="width:60px;height:60px;border-radius:50%;object-fit:cover;" />
+            <span>{{ usuario.alias }}</span>
+          </div>
+        }
+      </div>
+    }
+  </div>
   <div class="flex-grow-1 overflow-auto">
-    @for (user of usuariosEncontrados; track $index) {
+    @for (user of paginatedUsuarios; track $index) {
       <div class="user-item mb-2 ps-3 py-4">
-        <img [src]="user.img
-              ? apiBaseUrl + '/img/' + user.img
-              : 'assets/default-avatar.jpg'"
-          (error)="onImageError($event)" alt="avatar"
-          class="user-avatar" />
+        <img [src]="user.img ? apiBaseUrl + '/img/' + user.img : 'assets/default-avatar.jpg'"
+            (error)="onImageError($event)" alt="avatar" class="user-avatar" />
         <a class="link-primary" [routerLink]="['/perfil', user.id]">{{ user.alias }}</a>
       </div>
     }
+    @empty {
+      <p class="text-muted text-center mt-4">No se encontraron usuarios</p>
+    }
+    @if (totalPages > 1) {
+  <div class="d-flex justify-content-center gap-2 mt-3 pb-3">
+    <button class="btn btn-sm btn-primary" (click)="cambiarPagina(currentPage - 1)"
+        [disabled]="currentPage === 1">Anterior</button>
+    @for (page of [].constructor(totalPages); track $index) {
+      <button class="btn btn-sm"
+          [class.btn-primary]="currentPage === $index + 1"
+          [class.btn-outline-primary]="currentPage !== $index + 1"
+          (click)="cambiarPagina($index + 1)">{{ $index + 1 }}</button>
+    }
+    <button class="btn btn-sm btn-primary" (click)="cambiarPagina(currentPage + 1)"
+        [disabled]="currentPage === totalPages">Siguiente</button>
+  </div>
+}
   </div>
 </div>

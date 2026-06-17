@@ -9,6 +9,7 @@ export class ChatService {
   unreadCounts$ = new BehaviorSubject<Map<number, number>>(new Map());
   refreshChats$ = new Subject<void>();
   switchToChats$ = new Subject<void>();
+  refreshContactos$ = new Subject<void>(); 
   constructor(private http: HttpClient) { }
   selectUser(user: any) {
     this.selectedUser$.next(user);

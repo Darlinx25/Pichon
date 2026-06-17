@@ -4,6 +4,7 @@ import { environment } from '../../../environments/environment';
 import { UserService } from '../../services/user-service';
 import { AuthService } from '../../services/auth.service';
 import { Subscription } from 'rxjs';
+import { ChatService } from '../../services/chat-servise';
 @Component({
   selector: 'app-perfil',
   imports: [RouterLink],
@@ -20,7 +21,8 @@ export class Perfil implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private cdr: ChangeDetectorRef,
-    private authService: AuthService
+    private authService: AuthService,
+    private chatService: ChatService
   ) {
     this.authSub = this.authService.user$.subscribe(u => {
       if (u === undefined) return;
@@ -52,12 +54,14 @@ export class Perfil implements OnInit, OnDestroy {
   agregarContacto() {
     this.userService.agregarContacto(this.perfilData.id).subscribe(() => {
       this.perfilData.esContacto = true;
+      this.chatService.refreshContactos$.next(); 
       this.cdr.detectChanges();
     });
   }
   eliminarContacto() {
     this.userService.eliminarContacto(this.perfilData.id).subscribe(() => {
       this.perfilData.esContacto = false;
+      this.chatService.refreshContactos$.next(); 
       this.cdr.detectChanges();
     });
   }
