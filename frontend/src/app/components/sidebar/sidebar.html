@@ -11,7 +11,7 @@
             <a class="btn btn-primary" routerLink="/usuarios">Usuarios</a>
         </div>
 
-    
+
     </div>
 
     <ul class="nav nav-pills ps-3">
@@ -50,7 +50,13 @@
                         @if (lastMessages.get(user.id).id_usuario_ultimo !== user.id) {
                         <span>Tú: </span>
                         }
+                        @if (lastMessages.get(user.id).ultimo_tipo === 'image') {
+                        <span class="text-truncate">📷 {{ lastMessages.get(user.id).ultimo_contenido }}</span>
+                        } @else if (lastMessages.get(user.id).ultimo_tipo === 'file') {
+                        <span class="text-truncate">📎 {{ lastMessages.get(user.id).ultimo_contenido }}</span>
+                        } @else {
                         <span class="text-truncate">{{ lastMessages.get(user.id).ultimo_contenido }}</span>
+                        }
                     </small>
                     <small class="text-muted d-flex justify-content-end d-block me-4">{{
                         (lastMessages.get(user.id).ultima_fecha + 'Z') | date:'HH:mm' }}</small>

@@ -2,10 +2,10 @@
 -- version 5.2.3
 -- https://www.phpmyadmin.net/
 --
--- Host: mysql:3306
--- Generation Time: Jun 13, 2026 at 07:13 PM
--- Server version: 8.0.46
--- PHP Version: 8.3.31
+-- Servidor: mysql:3306
+-- Tiempo de generación: 17-06-2026 a las 19:27:44
+-- Versión del servidor: 8.0.46
+-- Versión de PHP: 8.3.31
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `pichon_db`
+-- Base de datos: `pichon_db`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `chat`
+-- Estructura de tabla para la tabla `chat`
 --
 
 CREATE TABLE `chat` (
@@ -34,7 +34,7 @@ CREATE TABLE `chat` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `chat`
+-- Volcado de datos para la tabla `chat`
 --
 
 INSERT INTO `chat` (`id_chat`, `id_usuario1`, `id_usuario2`) VALUES
@@ -48,7 +48,7 @@ INSERT INTO `chat` (`id_chat`, `id_usuario1`, `id_usuario2`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `contactos`
+-- Estructura de tabla para la tabla `contactos`
 --
 
 CREATE TABLE `contactos` (
@@ -59,7 +59,7 @@ CREATE TABLE `contactos` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `mensaje`
+-- Estructura de tabla para la tabla `mensaje`
 --
 
 CREATE TABLE `mensaje` (
@@ -68,13 +68,15 @@ CREATE TABLE `mensaje` (
   `id_usuario` int NOT NULL,
   `contenido` text NOT NULL,
   `fecha` datetime NOT NULL,
-  `leido` tinyint(1) NOT NULL DEFAULT '0'
+  `leido` tinyint(1) NOT NULL DEFAULT '0',
+  `tipo` varchar(10) NOT NULL DEFAULT 'text',
+  `archivo` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `perfil`
+-- Estructura de tabla para la tabla `perfil`
 --
 
 CREATE TABLE `perfil` (
@@ -86,7 +88,7 @@ CREATE TABLE `perfil` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `perfil`
+-- Volcado de datos para la tabla `perfil`
 --
 
 INSERT INTO `perfil` (`id`, `genero`, `fecha_nacimiento`, `idioma`, `estado`) VALUES
@@ -98,7 +100,7 @@ INSERT INTO `perfil` (`id`, `genero`, `fecha_nacimiento`, `idioma`, `estado`) VA
 -- --------------------------------------------------------
 
 --
--- Table structure for table `usuario`
+-- Estructura de tabla para la tabla `usuario`
 --
 
 CREATE TABLE `usuario` (
@@ -113,7 +115,7 @@ CREATE TABLE `usuario` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `usuario`
+-- Volcado de datos para la tabla `usuario`
 --
 
 INSERT INTO `usuario` (`id`, `username`, `email`, `password`, `alias`, `img`, `token`, `activado`) VALUES
@@ -123,76 +125,76 @@ INSERT INTO `usuario` (`id`, `username`, `email`, `password`, `alias`, `img`, `t
 (4, 'kevin', 'kevin@hotmail.com', '$2y$10$8Z14s0OGns5qdk.MjhyLjOGvz/p9vVvLsgXeyQUG4CebUBowy0VVi', 'kevin', '', '', 0);
 
 --
--- Indexes for dumped tables
+-- Índices para tablas volcadas
 --
 
 --
--- Indexes for table `chat`
+-- Indices de la tabla `chat`
 --
 ALTER TABLE `chat`
   ADD PRIMARY KEY (`id_chat`);
 
 --
--- Indexes for table `contactos`
+-- Indices de la tabla `contactos`
 --
 ALTER TABLE `contactos`
   ADD PRIMARY KEY (`id_usuario`,`id_contacto`),
   ADD KEY `fk_contactos_contacto` (`id_contacto`);
 
 --
--- Indexes for table `mensaje`
+-- Indices de la tabla `mensaje`
 --
 ALTER TABLE `mensaje`
   ADD PRIMARY KEY (`id_mensaje`);
 
 --
--- Indexes for table `perfil`
+-- Indices de la tabla `perfil`
 --
 ALTER TABLE `perfil`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `usuario`
+-- Indices de la tabla `usuario`
 --
 ALTER TABLE `usuario`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `username` (`username`,`email`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT de las tablas volcadas
 --
 
 --
--- AUTO_INCREMENT for table `chat`
+-- AUTO_INCREMENT de la tabla `chat`
 --
 ALTER TABLE `chat`
   MODIFY `id_chat` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- AUTO_INCREMENT for table `mensaje`
+-- AUTO_INCREMENT de la tabla `mensaje`
 --
 ALTER TABLE `mensaje`
   MODIFY `id_mensaje` int NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `usuario`
+-- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- Constraints for dumped tables
+-- Restricciones para tablas volcadas
 --
 
 --
--- Constraints for table `contactos`
+-- Filtros para la tabla `contactos`
 --
 ALTER TABLE `contactos`
   ADD CONSTRAINT `fk_contactos_contacto` FOREIGN KEY (`id_contacto`) REFERENCES `usuario` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `fk_contactos_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `perfil`
+-- Filtros para la tabla `perfil`
 --
 ALTER TABLE `perfil`
   ADD CONSTRAINT `id_perfil` FOREIGN KEY (`id`) REFERENCES `usuario` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;

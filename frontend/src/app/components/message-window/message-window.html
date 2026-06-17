@@ -3,19 +3,35 @@
     <div class="d-flex flex-column flex-grow-1" style="min-width:0;">
         @if (selectedUser) {
         <div class="border rounded-3 mx-0 mb-1 d-flex align-items-center px-3 gap-2" style="height:100px;">
-            <img [src]="selectedUser.img ? apiBaseUrl + '/img/' + selectedUser.img : 'assets/default-avatar.jpg'" (error)="onImageError($event)" alt="avatar"
+            <img [src]="selectedUser.img ? apiBaseUrl + '/img/' + selectedUser.img : 'assets/default-avatar.jpg'"
+                (error)="onImageError($event)" alt="avatar"
                 style="width:60px;height:60px;border-radius:50%;object-fit:cover;" />
             <span class="fw-bold">{{ selectedUser.alias }}</span>
 
         </div>
         <div #msgContainer class="msgContainer d-flex flex-column p-2" style="height:82%;overflow-y:auto;">
             @for (msg of messages; track $index) {
-                
             <div class="mb-1 p-2 rounded shadow-sm text-break" [class.ms-auto]="msg.side === 'outgoing'"
                 [class.me-auto]="msg.side !== 'outgoing'" [class.message-outgoing]="msg.side === 'outgoing'"
                 [class.bg-light]="msg.side !== 'outgoing'"
                 style="max-width:70%; white-space:pre-wrap; overflow-wrap:break-word; word-break:break-word;">
+
+                @if (msg.tipo === 'image') {
+                <div class="d-flex flex-column">
+                    <img [src]="apiBaseUrl + '/archivos/' + msg.archivo" alt="Imagen"
+                        style="max-width:100%; max-height:300px; border-radius:8px; object-fit:contain; cursor:pointer;"
+                        (click)="abrirImagen(apiBaseUrl + '/archivos/' + msg.archivo)" />
+                    <small class="text-muted mt-1">{{ msg.data }}</small>
+                </div>
+                } @else if (msg.tipo === 'file') {
+                <div class="d-flex align-items-center gap-2">
+                    <span>📎</span>
+                    <a [href]="apiBaseUrl + '/archivos/' + msg.archivo" target="_blank" download="{{ msg.data }}"
+                        class="text-decoration-none">{{ msg.data }}</a>
+                </div>
+                } @else {
                 <span [innerHTML]="urlify(msg.data)"></span>
+                }
                 <div class="msg-time">{{ (msg.fecha + 'Z') | date:'HH:mm' }}</div>
             </div>
             {{ scrollearAbajo() }}
@@ -29,6 +45,11 @@
         <div class=" d-flex justify-content-center align-items-center" style="height:10%;">
             <form id="chat-form" [formGroup]="chatForm" (ngSubmit)="enviarMensaje()">
                 <div class="input-group h-100">
+                    <button class="btn btn-outline-secondary" type="button" (click)="fileInput.click()"
+                        [disabled]="!selectedUser" title="Adjuntar archivo">
+                        📎
+                    </button>
+                    <input hidden #fileInput type="file" (change)="onFileSelected($event)" />
                     <textarea #mensajeInput formControlName="mensaje" (keydown.enter)="manejadorTeclaEnter($event)"
                         class="form-control" placeholder="Escribe algo..." rows="1" style="resize:none;"></textarea>
                     <button class="btn btn-primary" type="submit"

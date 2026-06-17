@@ -30,6 +30,25 @@ class ChatServer implements MessageComponentInterface
             }
             return;
         }
+        if ($data['type'] === 'file_notification') {
+            $toId = (int)$data['to'];
+            $fileMsg = [
+                'id_mensaje' => (int)$data['id_mensaje'],
+                'id_usuario' => (int)$data['fromId'],
+                'id_chat'    => (int)$data['chatId'],
+                'contenido'  => $data['contenido'],
+                'fecha'      => $data['fecha'],
+                'leido'      => 0,
+                'tipo'       => $data['tipo'],
+                'archivo'    => $data['archivo'],
+            ];
+            if (isset($this->userConnections[$toId])) {
+    foreach ($this->userConnections[$toId] as $c) {
+        $c->send(json_encode($fileMsg));
+    }
+}
+            return;
+        }
         if ($data['type'] !== 'message') return;
         $db = require __DIR__ . '/../db.php';
         $texto = mysqli_real_escape_string($db, $data['data']);

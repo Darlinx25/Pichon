@@ -54,6 +54,7 @@ frontend/dist
 # backend
 backend/vendor
 backend/img/*
+backend/archivos/*
 
 # logs
 *.log

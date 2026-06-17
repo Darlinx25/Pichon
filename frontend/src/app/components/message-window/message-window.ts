@@ -20,6 +20,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 })
 export class MessageWindow implements OnInit, OnDestroy {
   @ViewChild('mensajeInput') mensajeInput!: ElementRef<HTMLTextAreaElement>;
+  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
   messages: any[] = [];
   lastMessages: Map<number, any> = new Map();
   selectedUser: any = null;
@@ -43,7 +44,7 @@ export class MessageWindow implements OnInit, OnDestroy {
       text.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>')
     );
   }
-  
+
   formBuilder = inject(FormBuilder);
   router = inject(Router);
   chatForm = this.formBuilder.group({ mensaje: ['', Validators.required] });
@@ -75,7 +76,8 @@ export class MessageWindow implements OnInit, OnDestroy {
           id: Number(msg.id_usuario),
           ultimo_contenido: msg.contenido,
           ultima_fecha: msg.fecha,
-          id_usuario_ultimo: Number(msg.id_usuario)
+          id_usuario_ultimo: Number(msg.id_usuario),
+          ultimo_tipo: msg.tipo || 'text'
         });
         this.chatService.refreshChats$.next();
         if (msg.id_usuario !== this.user.id) {
@@ -88,14 +90,17 @@ export class MessageWindow implements OnInit, OnDestroy {
         data: msg.contenido,
         fecha: msg.fecha,
         fromId: msg.id_usuario,
-        side: msg.id_usuario === this.user.id ? 'outgoing' : 'incoming'
+        side: msg.id_usuario === this.user.id ? 'outgoing' : 'incoming',
+        tipo: msg.tipo || 'text',
+        archivo: msg.archivo || null
       });
       const otroId = msg.id_usuario === this.user.id ? this.selectedUser.id : msg.id_usuario;
       this.lastMessages.set(Number(otroId), {
         id: Number(otroId),
         ultimo_contenido: msg.contenido,
         ultima_fecha: msg.fecha,
-        id_usuario_ultimo: Number(msg.id_usuario)
+        id_usuario_ultimo: Number(msg.id_usuario),
+        ultimo_tipo: msg.tipo || 'text'
       });
       this.chatService.refreshChats$.next();
       this.cdr.detectChanges();
@@ -120,7 +125,9 @@ export class MessageWindow implements OnInit, OnDestroy {
           data: mensaje.contenido,
           fecha: mensaje.fecha,
           fromId: mensaje.id_usuario,
-          side: esMio ? 'outgoing' : 'incoming'
+          side: esMio ? 'outgoing' : 'incoming',
+          tipo: mensaje.tipo || 'text',
+          archivo: mensaje.archivo || null
         };
       });
       if (mensajes.length > 0) {
@@ -129,7 +136,8 @@ export class MessageWindow implements OnInit, OnDestroy {
           id: idUsuario,
           ultimo_contenido: ultimo.contenido,
           ultima_fecha: ultimo.fecha,
-          id_usuario_ultimo: ultimo.id_usuario
+          id_usuario_ultimo: ultimo.id_usuario,
+          ultimo_tipo: ultimo.tipo || 'text'
         });
       }
       this.cdr.detectChanges();
@@ -156,6 +164,65 @@ export class MessageWindow implements OnInit, OnDestroy {
     this.chatForm.reset();
     this.chatService.switchToChats$.next();
   }
+
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files?.[0]) {
+      this.subirArchivo(input.files[0]);
+      input.value = '';
+    }
+  }
+
+  subirArchivo(file: File) {
+    if (!this.selectedUser || !this.chatId) return;
+    const formData = new FormData();
+    formData.append('archivo', file, file.name);
+    formData.append('id_chat', this.chatId.toString());
+    formData.append('id_destinatario', this.selectedUser.id.toString());
+
+    this.http.post<any>(`${this.apiBaseUrl}/subirArchivo.php`, formData).subscribe({
+      next: (res) => {
+        if (res.error) return;
+        this.messages.push({
+          data: res.contenido,
+          fecha: res.fecha,
+          fromId: res.id_usuario,
+          side: 'outgoing',
+          tipo: res.tipo,
+          archivo: res.archivo
+        });
+        this.lastMessages.set(this.selectedUser.id, {
+          id: this.selectedUser.id,
+          ultimo_contenido: res.contenido,
+          ultima_fecha: res.fecha,
+          id_usuario_ultimo: this.user.id,
+          ultimo_tipo: res.tipo
+        });
+        this.chatService.refreshChats$.next();
+        this.cdr.detectChanges();
+        this.webSocketService.sendMessage({
+          type: 'file_notification',
+          from: this.user?.alias,
+          fromId: this.user?.id,
+          to: this.selectedUser.id,
+          chatId: this.chatId,
+          id_mensaje: res.id_mensaje,
+          contenido: res.contenido,
+          fecha: res.fecha,
+          tipo: res.tipo,
+          archivo: res.archivo
+        });
+      },
+      error: (err) => {
+        console.error('Error al subir archivo:', err);
+      }
+    });
+  }
+
+  abrirImagen(url: string) {
+    window.open(url, '_blank');
+  }
+
   ngOnDestroy(): void {
     this.authSub?.unsubscribe();
     this.messageSub?.unsubscribe();

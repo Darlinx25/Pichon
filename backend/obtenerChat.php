@@ -14,15 +14,17 @@ if (!$id_chat) {
     mysqli_query($conexion, "INSERT INTO chat (id_usuario1, id_usuario2) VALUES ($id1, $id2)");
     $id_chat = (int)mysqli_insert_id($conexion);
 }
-$result = mysqli_query($conexion, "SELECT id_mensaje, id_usuario, contenido, fecha 
+$result = mysqli_query($conexion, "SELECT id_mensaje, id_usuario, contenido, fecha, tipo, archivo
     FROM mensaje WHERE id_chat = $id_chat ORDER BY fecha ASC");
 $messages = [];
 while ($row = mysqli_fetch_assoc($result)) {
     $messages[] = [
-        'id_mensaje' => (int)$row['id_mensaje'],
-        'id_usuario' => (int)$row['id_usuario'],
-        'contenido' => $row['contenido'],
-        'fecha' => $row['fecha'],
-    ];
+    'id_mensaje' => (int)$row['id_mensaje'],
+    'id_usuario' => (int)$row['id_usuario'],
+    'contenido' => $row['contenido'],
+    'fecha' => $row['fecha'],
+    'tipo' => $row['tipo'],
+    'archivo' => $row['archivo'],
+];
 }
 echo json_encode(['id_chat' => $id_chat, 'messages' => $messages]);

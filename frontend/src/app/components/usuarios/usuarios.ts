@@ -17,7 +17,7 @@ export class Usuarios implements OnInit {
   apiBaseUrl = environment.apiBaseUrl;
   searchForm = this.formBuilder.group({ busqueda: [''] });
   currentPage = 1;
-  pageSize = 3;
+  pageSize = 5;
   constructor(
     private userService: UserService,
     private cdr: ChangeDetectorRef,
