@@ -9,9 +9,8 @@ session_set_cookie_params([
 ]);
 session_name('PICHON_SESSION');
 session_start();
-$allowed_origins = ['http://localhost:4200', 'http://127.0.0.1:4200', 'http://localhost:8082'];
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
-if (in_array($origin, $allowed_origins)) {
+if (preg_match('#^https?://(localhost|127\.0\.0\.1|192\.168\.\d{1,3}\.\d{1,3})(:\d+)?$#', $origin)) {
     header("Access-Control-Allow-Origin: $origin");
     header("Access-Control-Allow-Credentials: true");
 }
