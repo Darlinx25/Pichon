@@ -77,3 +77,12 @@
 .btn-outline-secondary {
   border-color: #ced4da;
 }
+
+.btn-outline-primary{
+  background: rgba(110, 80, 55, 0.2);
+  border-color: rgba(110, 80, 55, 0.35); 
+  &:hover {
+    
+    background-color:  rgba(110, 80, 55, 0.35)
+  } 
+}

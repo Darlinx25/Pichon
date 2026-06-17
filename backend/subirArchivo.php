@@ -17,7 +17,8 @@ $ext = strtolower(pathinfo($_FILES['archivo']['name'], PATHINFO_EXTENSION));
 $allowed_img = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
 $tipo = in_array($ext, $allowed_img) ? 'image' : 'file';
 
-$filename = time() . '_' . bin2hex(random_bytes(4)) . '.' . $ext;
+$safeName = preg_replace('/[^a-zA-Z0-9_\-]/', '_', pathinfo($_FILES['archivo']['name'], PATHINFO_FILENAME));
+$filename = substr($safeName, 0, 80) . '_' . bin2hex(random_bytes(2)) . '.' . $ext;
 $archivosDir = __DIR__ . '/archivos/';
 if (!is_dir($archivosDir)) {
     mkdir($archivosDir, 0755, true);

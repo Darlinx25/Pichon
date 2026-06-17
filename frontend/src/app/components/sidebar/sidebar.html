@@ -51,9 +51,9 @@
                         <span>Tú: </span>
                         }
                         @if (lastMessages.get(user.id).ultimo_tipo === 'image') {
-                        <span class="text-truncate">📷 {{ lastMessages.get(user.id).ultimo_contenido }}</span>
+                        <span class="text-truncate"><img style="width:30px;height:21px;flex-shrink:0;object-fit:contain;border-radius:6px;" [src]="'assets/iconFto.png'"/>{{ lastMessages.get(user.id).ultimo_contenido }}</span>
                         } @else if (lastMessages.get(user.id).ultimo_tipo === 'file') {
-                        <span class="text-truncate">📎 {{ lastMessages.get(user.id).ultimo_contenido }}</span>
+                        <span class="text-truncate"><img style="width:30px;height:16px;flex-shrink:0;object-fit:contain;border-radius:6px;" [src]="'assets/iconDesc.png'"/> {{ lastMessages.get(user.id).ultimo_contenido }}</span>
                         } @else {
                         <span class="text-truncate">{{ lastMessages.get(user.id).ultimo_contenido }}</span>
                         }

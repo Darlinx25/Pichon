@@ -24,10 +24,10 @@
                     <small class="text-muted mt-1">{{ msg.data }}</small>
                 </div>
                 } @else if (msg.tipo === 'file') {
-                <div class="d-flex align-items-center gap-2">
-                    <span>📎</span>
-                    <a [href]="apiBaseUrl + '/archivos/' + msg.archivo" target="_blank" download="{{ msg.data }}"
-                        class="text-decoration-none">{{ msg.data }}</a>
+                <div class="d-flex align-items-center gap-2" style="max-width:100%;">
+                    <img style="width:35px;height:25px;flex-shrink:0;object-fit:contain;border-radius:6px;" [src]="'assets/iconDesc.png'"/>
+                    <a [href]="apiBaseUrl + '/archivos/' + msg.archivo" target="_blank"
+                        class="text-decoration-none text-truncate" style="max-width:600px;">{{ msg.data }}</a>
                 </div>
                 } @else {
                 <span [innerHTML]="urlify(msg.data)"></span>
@@ -45,9 +45,9 @@
         <div class=" d-flex justify-content-center align-items-center" style="height:10%;">
             <form id="chat-form" [formGroup]="chatForm" (ngSubmit)="enviarMensaje()">
                 <div class="input-group h-100">
-                    <button class="btn btn-outline-secondary" type="button" (click)="fileInput.click()"
+                    <button class="btn btn-outline-primary" type="button" (click)="fileInput.click()"
                         [disabled]="!selectedUser" title="Adjuntar archivo">
-                        📎
+                        <img style="max-width:40%; max-height:90px;" [src]="'assets/iconAdj.png'"/>
                     </button>
                     <input hidden #fileInput type="file" (change)="onFileSelected($event)" />
                     <textarea #mensajeInput formControlName="mensaje" (keydown.enter)="manejadorTeclaEnter($event)"
