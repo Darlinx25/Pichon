@@ -82,6 +82,7 @@ export class MessageWindow implements OnInit, OnDestroy {
         this.chatService.refreshChats$.next();
         if (msg.id_usuario !== this.user.id) {
           this.chatService.incrementUnread(msg.id_usuario);
+          this.audioService.playNotificacionUnread();
         }
         return;
       }

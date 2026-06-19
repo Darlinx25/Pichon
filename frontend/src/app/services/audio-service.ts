@@ -19,4 +19,8 @@ export class AudioService {
       this.sonidoNotificacion.play().catch(err => console.error('Erorr al reproducir audio:', err));
     }
   }
+  playNotificacionUnread(): void {
+    this.sonidoNotificacion.load();
+    this.sonidoNotificacion.play().catch(err => console.error('Erorr al reproducir audio:', err));
+  }
 }
