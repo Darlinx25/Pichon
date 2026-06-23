@@ -6,7 +6,10 @@
             <img [src]="selectedUser.img ? apiBaseUrl + '/img/' + selectedUser.img : 'assets/default-avatar.jpg'"
                 (error)="onImageError($event)" alt="avatar"
                 style="width:60px;height:60px;border-radius:50%;object-fit:cover;" />
-            <span class="fw-bold">{{ selectedUser.alias }}</span>
+                <div (click)=seleccionarUsuario(selectedUser) style="cursor:pointer;">
+                <span class="fw-bold">{{ selectedUser.alias }}</span>
+                </div>
+            
 
         </div>
         <div #msgContainer class="msgContainer d-flex flex-column p-2" style="height:82%;overflow-y:auto;">

@@ -245,4 +245,7 @@ export class MessageWindow implements OnInit, OnDestroy {
     const img = event.target as HTMLImageElement;
     img.src = 'assets/default-avatar.jpg';
   }
+  seleccionarUsuario(usuario: any) {
+    this.router.navigate(['/perfil', usuario.id]);
+  }
 }
