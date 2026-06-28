@@ -49,7 +49,9 @@ if (mysqli_query($conexion, $sql)) {
             "success" => true,
             "message" => "Usuario creado correctamente"
         ]);
-        mandarCorreoActivacion($email, "http://localhost:4200", $token);
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $baseUrl = $protocol . '://' . $_SERVER['HTTP_HOST'];
+        mandarCorreoActivacion($email, $baseUrl, $token);
     } else {
         echo json_encode([
             "error" => "Error al crear el perfil"

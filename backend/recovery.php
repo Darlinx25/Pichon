@@ -14,7 +14,9 @@ if ($usuario = $resultado->fetch_assoc()) {
     $update = $conexion->prepare("UPDATE usuario SET token = ? WHERE id = ?");
     $update->bind_param("si", $token, $usuario['id']);
     if ($update->execute()) {
-        mandarCorreoRecuperacion($email, "http://localhost:4200", $token);
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $baseUrl = $protocol . '://' . $_SERVER['HTTP_HOST'];
+        mandarCorreoRecuperacion($email, $baseUrl, $token);
         echo json_encode(["success" => true, "message" => "Correo de recuperación enviado."]);
     } else {
         echo json_encode(["error" => "Error al enviar correo de recuperación."]);
